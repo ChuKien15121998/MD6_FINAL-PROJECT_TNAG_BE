@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.dto.response.ResponseMessage;
 import com.codegym.model.Merchant;
 import com.codegym.service.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,26 @@ public class MerchantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> showMerchantDetail(@PathVariable long id) {
+    public ResponseEntity<?> showMerchantDetail(@PathVariable Long id) {
         Optional<Merchant> merchantOptional = merchantService.findById(id);
         if (!merchantOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(merchantOptional.get(), HttpStatus.OK);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editMerchant(@PathVariable Long id, @RequestBody Merchant merchant) {
+        Optional<Merchant> merchantOptional = merchantService.findById(id);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        merchant.setId(merchantOptional.get().getId());
+        merchant.setPhoneNumber(merchantOptional.get().getPhoneNumber());
+        merchant.setGoldPartner(merchantOptional.get().getGoldPartner());
+        merchant.setAppUser(merchantOptional.get().getAppUser());
+        merchant.setActive(merchantOptional.get().getActive());
+        merchant.setAccept(merchantOptional.get().getAccept());
+        merchantService.save(merchant);
+        return new ResponseEntity<>(new ResponseMessage("update success"), HttpStatus.OK);
     }
 }
