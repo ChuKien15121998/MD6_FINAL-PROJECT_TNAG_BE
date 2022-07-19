@@ -7,7 +7,6 @@ public class SignUpFormCustomer {
     private String username;
     private String phone;
     private String address;
-
     private AddressCategory addressCategory;
     private String password;
     private String confirmPassword;

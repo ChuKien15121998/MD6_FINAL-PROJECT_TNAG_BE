@@ -17,6 +17,10 @@ public class Merchant {
     @NotBlank
     @Pattern(regexp = "^0[0-9]{8,9}$")
     private String phoneNumber;
+    @Lob
+    private String avatar;
+    @Lob
+    private String imageBanner;
     @Column(columnDefinition = "TIME")
     private String openTime;
     @Column(columnDefinition = "TIME")
@@ -47,6 +51,49 @@ public class Merchant {
         this.isAccept = isAccept;
         this.isActive = isActive;
         this.appUser = appUser;
+    }
+
+    public Merchant(String name, String phoneNumber, String imageBanner, String openTime, String closeTime, String address, Boolean goldPartner, Boolean isAccept, Boolean isActive, AppUser appUser) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.imageBanner = imageBanner;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.address = address;
+        this.goldPartner = goldPartner;
+        this.isAccept = isAccept;
+        this.isActive = isActive;
+        this.appUser = appUser;
+    }
+
+    public Merchant(String name, String phoneNumber, String avatar, String imageBanner, String openTime, String closeTime, String address, Boolean goldPartner, Boolean isAccept, Boolean isActive, AppUser appUser) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.avatar = avatar;
+        this.imageBanner = imageBanner;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.address = address;
+        this.goldPartner = goldPartner;
+        this.isAccept = isAccept;
+        this.isActive = isActive;
+        this.appUser = appUser;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getImageBanner() {
+        return imageBanner;
+    }
+
+    public void setImageBanner(String imageBanner) {
+        this.imageBanner = imageBanner;
     }
 
     public Long getId() {

@@ -7,37 +7,57 @@ public class SignUpFormMerchant {
     private String address;
     private String openTime;
     private String closeTime;
-    private String email;
     private String password;
     private String confirmPassword;
     private String avatar;
+    private String imageBanner;
 
     public SignUpFormMerchant() {
     }
 
-    public SignUpFormMerchant(String name, String username, String phone, String address, String openTime, String closeTime, String email, String password, String confirmPassword, String avatar) {
+    public SignUpFormMerchant(String name, String username, String phone, String address, String openTime, String closeTime, String password, String confirmPassword, String avatar) {
         this.name = name;
         this.username = username;
         this.phone = phone;
         this.address = address;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.avatar = avatar;
     }
-    public SignUpFormMerchant(String name, String username, String phone, String address, String openTime, String closeTime, String email, String password, String confirmPassword) {
+    public SignUpFormMerchant(String name, String username, String phone, String address, String openTime, String closeTime, String password, String confirmPassword) {
         this.name = name;
         this.username = username;
         this.phone = phone;
         this.address = address;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
     }
+
+    public SignUpFormMerchant(String name, String username, String phone, String address, String openTime, String closeTime, String password, String confirmPassword, String avatar, String imageBanner) {
+        this.name = name;
+        this.username = username;
+        this.phone = phone;
+        this.address = address;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.avatar = avatar;
+        this.imageBanner = imageBanner;
+    }
+
+    public String getImageBanner() {
+        return imageBanner;
+    }
+
+    public void setImageBanner(String imageBanner) {
+        this.imageBanner = imageBanner;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -101,14 +121,6 @@ public class SignUpFormMerchant {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
