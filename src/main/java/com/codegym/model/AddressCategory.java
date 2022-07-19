@@ -13,7 +13,6 @@ public class AddressCategory {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
-        @NotBlank
         private String addressCategory;
 
         public AddressCategory() {

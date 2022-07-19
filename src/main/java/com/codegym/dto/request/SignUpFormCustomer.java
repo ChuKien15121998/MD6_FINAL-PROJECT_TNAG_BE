@@ -1,11 +1,14 @@
 package com.codegym.dto.request;
 
+import com.codegym.model.AddressCategory;
+
 public class SignUpFormCustomer {
     private String name;
     private String username;
     private String phone;
     private String address;
-    private String email;
+
+    private AddressCategory addressCategory;
     private String password;
     private String confirmPassword;
     private String avatar;
@@ -13,25 +16,23 @@ public class SignUpFormCustomer {
     public SignUpFormCustomer() {
     }
 
-    public SignUpFormCustomer(String name, String username, String phone, String address, String email, String password, String confirmPassword, String avatar) {
+    public SignUpFormCustomer(String name, String username, String phone, String address, AddressCategory addressCategory, String password, String confirmPassword, String avatar) {
         this.name = name;
         this.username = username;
         this.phone = phone;
         this.address = address;
-        this.email = email;
+        this.addressCategory = addressCategory;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.avatar = avatar;
     }
 
-    public SignUpFormCustomer(String name, String username, String phone, String address, String email, String password, String confirmPassword) {
-        this.name = name;
-        this.username = username;
-        this.phone = phone;
-        this.address = address;
-        this.email = email;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
+    public AddressCategory getAddressCategory() {
+        return addressCategory;
+    }
+
+    public void setAddressCategory(AddressCategory addressCategory) {
+        this.addressCategory = addressCategory;
     }
 
     public String getPhone() {
@@ -82,14 +83,6 @@ public class SignUpFormCustomer {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -97,5 +90,4 @@ public class SignUpFormCustomer {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

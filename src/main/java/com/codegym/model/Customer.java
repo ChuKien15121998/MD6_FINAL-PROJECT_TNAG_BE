@@ -27,6 +27,12 @@ public class Customer {
         this.appUser = appUser;
     }
 
+    public Customer(String name, String phoneNumber, AppUser appUser) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.appUser = appUser;
+    }
+
     public Long getId() {
         return id;
     }
