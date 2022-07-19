@@ -24,7 +24,7 @@ public class Food {
     @Column (columnDefinition = "BIGINT default 0")
     private Long sold;
     @NotBlank
-    @Column(name = "isDelete", columnDefinition = "boolean default true")
+    @Column(name = "isDelete", columnDefinition = "boolean default false")
     private Boolean isDelete;
     @ManyToOne
     private FoodCategory foodCategory;
