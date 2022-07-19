@@ -2,6 +2,7 @@ package com.codegym.controller;
 
 import com.codegym.model.Merchant;
 import com.codegym.service.IMerchantService;
+import jdk.vm.ci.meta.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,5 +41,17 @@ public class MerchantController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(merchantOptional.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("/change-status/{id}")
+    public ResponseEntity<Merchant> updateStatusMerchant(@PathVariable Long id, @RequestBody Merchant merchant) {
+        Optional<Merchant> merchantOptional = merchantService.findById(id);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Merchant newMerchant = merchantOptional.get();
+        newMerchant.setId(id);
+        newMerchant.setActive(merchant.getActive());
+        return new ResponseEntity<>(merchantService.save(newMerchant), HttpStatus.OK);
     }
 }

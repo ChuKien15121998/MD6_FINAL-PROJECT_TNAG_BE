@@ -49,6 +49,10 @@ public class Merchant {
         this.appUser = appUser;
     }
 
+    public Merchant(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public Long getId() {
         return id;
     }
