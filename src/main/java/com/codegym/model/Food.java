@@ -16,6 +16,8 @@ public class Food {
     @NotBlank
     private String description;
     @NotBlank
+    private double price;
+    @NotBlank
     private double priceDiscount;
     @NotBlank
     private Boolean recommend;
@@ -43,6 +45,14 @@ public class Food {
         this.isDelete = isDelete;
         this.foodCategory = foodCategory;
         this.merchant = merchant;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public Long getId() {

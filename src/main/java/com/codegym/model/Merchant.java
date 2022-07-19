@@ -15,7 +15,7 @@ public class Merchant {
     @NotBlank
     private String name;
     @NotBlank
-    @Pattern(regexp = "^[0](\\+\\d{1,3}\\s?)?((\\(\\d{3}\\)\\s?)|(\\d{3})(\\s|-?))(\\d{3}(\\s|-?))(\\d{3})(\\s?(([E|e]xt[:|.|]?)|x|X)(\\s?\\d+))?")
+    @Pattern(regexp = "^0[0-9]{8,9}$")
     private String phoneNumber;
     @Column(columnDefinition = "TIME")
     private String openTime;
