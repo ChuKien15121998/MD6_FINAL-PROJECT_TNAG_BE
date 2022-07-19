@@ -1,10 +1,13 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -16,6 +19,10 @@ public class MerchantRegisterRequest {
     private String name;
     @NotBlank
     private String username;
+    @JsonIgnore
+    @NotBlank
+    @Size(min = 6, max = 100)
+    private String password;
     @NotBlank
     @Pattern(regexp = "^0[0-9]{8,9}$")
     private String phone;
@@ -26,6 +33,8 @@ public class MerchantRegisterRequest {
     @Column(columnDefinition = "TIME")
     private String closeTime;
     @Lob
+    private String avatar;
+    @Lob
     private String imageBanner;
     @Column(columnDefinition = "boolean default false")
     private boolean reviewed;
@@ -35,39 +44,34 @@ public class MerchantRegisterRequest {
     public MerchantRegisterRequest() {
     }
 
-    public MerchantRegisterRequest(Long id, String name, String phone, String address, String openTime, String closeTime, String imageBanner, boolean reviewed, boolean accept) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-        this.openTime = openTime;
-        this.closeTime = closeTime;
-        this.imageBanner = imageBanner;
-        this.reviewed = reviewed;
-        this.accept = accept;
-    }
-
-    public MerchantRegisterRequest(String name, String phone, String address, String openTime, String closeTime, String imageBanner, boolean reviewed, boolean accept) {
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-        this.openTime = openTime;
-        this.closeTime = closeTime;
-        this.imageBanner = imageBanner;
-        this.reviewed = reviewed;
-        this.accept = accept;
-    }
-
-    public MerchantRegisterRequest(String name, String username, String phone, String address, String openTime, String closeTime, String imageBanner, boolean reviewed, boolean accept) {
+    public MerchantRegisterRequest(String name, String username, String password, String phone, String address, String openTime, String closeTime, String avatar, String imageBanner, boolean reviewed, boolean accept) {
         this.name = name;
         this.username = username;
+        this.password = password;
         this.phone = phone;
         this.address = address;
         this.openTime = openTime;
         this.closeTime = closeTime;
+        this.avatar = avatar;
         this.imageBanner = imageBanner;
         this.reviewed = reviewed;
         this.accept = accept;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getUsername() {
