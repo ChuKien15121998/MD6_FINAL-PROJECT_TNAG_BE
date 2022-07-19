@@ -25,6 +25,12 @@ public class Address {
         this.customer = customer;
     }
 
+    public Address(String nameAddress, AddressCategory addressCategory, Customer customer) {
+        this.nameAddress = nameAddress;
+        this.addressCategory = addressCategory;
+        this.customer = customer;
+    }
+
     public Long getId() {
         return id;
     }

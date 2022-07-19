@@ -50,10 +50,10 @@ public class MerchantController {
         }
         merchant.setId(merchantOptional.get().getId());
         merchant.setPhoneNumber(merchantOptional.get().getPhoneNumber());
-        merchant.setGoldPartner(merchantOptional.get().getGoldPartner());
+        merchant.setGoldPartner(merchantOptional.get().isGoldPartner());
         merchant.setAppUser(merchantOptional.get().getAppUser());
-        merchant.setActive(merchantOptional.get().getActive());
-        merchant.setAccept(merchantOptional.get().getAccept());
+        merchant.setActive(merchantOptional.get().isActive());
+        merchant.setAccept(merchantOptional.get().isAccept());
         merchantService.save(merchant);
         return new ResponseEntity<>(new ResponseMessage("update success"), HttpStatus.OK);
     }

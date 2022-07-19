@@ -9,13 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
 public class MerchantService implements IMerchantService {
     @Autowired
-    private IMerchantRepository merchantRepository;
-    @Override
-    public Page<Merchant> findAll(Pageable pageable) {
-        return merchantRepository.findAll(pageable);
+    IMerchantRepository merchantRepository;
+
+    public Iterable<Merchant> findAll() {
+        return merchantRepository.findAll();
     }
 
     @Override
@@ -28,8 +29,28 @@ public class MerchantService implements IMerchantService {
         return merchantRepository.save(merchant);
     }
 
+    public void remove(Long id) {
+        merchantRepository.deleteById(id);
+    }
+
+//    public Optional<Merchant> findMerchantByUser_Id(Long id) {
+//        return merchantRepository.findMerchantByUser_Id(id);
+//    }
+
+    public Iterable<Merchant> findMerchantByNameContaining(String name) {
+        return merchantRepository.findMerchantByNameContaining(name);
+    }
+
+    public Optional<Merchant> findMerchantByAppUser_Id(Long id) {
+        return merchantRepository.findMerchantByAppUser_Id(id);
+    }
     @Override
     public void deleteById(Long id) {
         merchantRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Merchant> findAll(Pageable pageable) {
+        return merchantRepository.findAll(pageable);
     }
 }
