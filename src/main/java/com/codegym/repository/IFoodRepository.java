@@ -11,6 +11,6 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
 
     Page<Food> findAllByMerchantId(Long id, Pageable pageable);
 
-
+    Page<Food> findAllByNameContaining(Pageable pageable, String name);
 
 }

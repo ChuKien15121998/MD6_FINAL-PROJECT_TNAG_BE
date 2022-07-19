@@ -13,18 +13,18 @@ public class Food {
     private String name;
     @Lob
     private String image;
-    @NotBlank
+//    @NotBlank
     private String description;
-    @NotBlank
+//    @NotBlank
     private double price;
-    @NotBlank
+//    @NotBlank
     private double priceDiscount;
-    @NotBlank
+//    @NotBlank
     private Boolean recommend;
     @Column (columnDefinition = "BIGINT default 0")
     private Long sold;
-    @NotBlank
-    @Column(name = "isDelete", columnDefinition = "boolean default true")
+//    @NotBlank
+    @Column(name = "is_Delete", columnDefinition = "boolean default true")
     private Boolean isDelete;
     @ManyToOne
     private FoodCategory foodCategory;

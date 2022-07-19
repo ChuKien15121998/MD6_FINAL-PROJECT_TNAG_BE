@@ -25,9 +25,9 @@ public class Merchant {
     private String address;
     @Column(name = "gold")
     private Boolean goldPartner;
-    @Column(name = "isAccept", columnDefinition = "boolean default false")
+    @Column(name = "is_Accept", columnDefinition = "boolean default false")
     private Boolean isAccept;
-    @Column(name = "isActive", columnDefinition = "boolean default true")
+    @Column(name = "is_Active", columnDefinition = "boolean default true")
     private Boolean isActive;
     @OneToOne
     @JoinColumn(name = "user_id")

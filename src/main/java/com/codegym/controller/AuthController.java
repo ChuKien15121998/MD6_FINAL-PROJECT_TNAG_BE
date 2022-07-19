@@ -40,39 +40,39 @@
 //    @Autowired
 //    JwtProvider jwtProvider;
 //
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm, HttpServletRequest request) {
-//        if (userService.existsByUsername(signUpForm.getUsername())) {
-//            return new ResponseEntity<>(new ResponseMessage("no_user"), HttpStatus.OK);
-//        }
-//        if (userService.existsByEmail(signUpForm.getEmail())) {
-//            return new ResponseEntity<>(new ResponseMessage("no_email"), HttpStatus.OK);
-//        }
-//        if (signUpForm.getAvatar() == null || signUpForm.getAvatar().trim().isEmpty()) {
-//            signUpForm.setAvatar("https://firebasestorage.googleapis.com/v0/b/blog-firebase-c1eff.appspot.com/o/images%2F765-default-avatar.png?alt=media&token=913a079e-dbff-4ff1-a15b-be184446f58b");
-//        }
-//        AppUser appUser = new AppUser(signUpForm.getName(), signUpForm.getUsername(), signUpForm.getEmail(), passwordEncoder.encode(signUpForm.getPassword()), signUpForm.getAvatar());
-//        Set<String> strRoles = signUpForm.getRoles();
-//        Set<Role> roles = new HashSet<>();
-//        strRoles.forEach(role -> {
-//            switch (role) {
-//                case "admin":
-//                    Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN).orElseThrow(() -> new RuntimeException("Role not found"));
-//                    roles.add(adminRole);
-//                    break;
-//                case "merchant":
-//                    Role merchantRole = roleService.findByName(RoleName.ROLE_MERCHANT).orElseThrow(() -> new RuntimeException("Role not found"));
-//                    roles.add(merchantRole);
-//                    break;
-//                default:
-//                    Role userRole = roleService.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RuntimeException("Role not found"));
-//                    roles.add(userRole);
-//            }
-//        });
-//        appUser.setRoles(roles);
-//        userService.save(appUser);
-//        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
-//    }
+////    @PostMapping("/signup")
+////    public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm, HttpServletRequest request) {
+////        if (userService.existsByUsername(signUpForm.getUsername())) {
+////            return new ResponseEntity<>(new ResponseMessage("no_user"), HttpStatus.OK);
+////        }
+////        if (userService.existsByEmail(signUpForm.getEmail())) {
+////            return new ResponseEntity<>(new ResponseMessage("no_email"), HttpStatus.OK);
+////        }
+////        if (signUpForm.getAvatar() == null || signUpForm.getAvatar().trim().isEmpty()) {
+////            signUpForm.setAvatar("https://firebasestorage.googleapis.com/v0/b/blog-firebase-c1eff.appspot.com/o/images%2F765-default-avatar.png?alt=media&token=913a079e-dbff-4ff1-a15b-be184446f58b");
+////        }
+////        AppUser appUser = new AppUser(signUpForm.getName(), signUpForm.getUsername(), signUpForm.getEmail(), passwordEncoder.encode(signUpForm.getPassword()), signUpForm.getAvatar());
+////        Set<String> strRoles = signUpForm.getRoles();
+////        Set<Role> roles = new HashSet<>();
+////        strRoles.forEach(role -> {
+////            switch (role) {
+////                case "admin":
+////                    Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN).orElseThrow(() -> new RuntimeException("Role not found"));
+////                    roles.add(adminRole);
+////                    break;
+////                case "merchant":
+////                    Role merchantRole = roleService.findByName(RoleName.ROLE_MERCHANT).orElseThrow(() -> new RuntimeException("Role not found"));
+////                    roles.add(merchantRole);
+////                    break;
+////                default:
+////                    Role userRole = roleService.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RuntimeException("Role not found"));
+////                    roles.add(userRole);
+////            }
+////        });
+////        appUser.setRoles(roles);
+////        userService.save(appUser);
+////        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+////    }
 //
 //    @PostMapping("/signin")
 //    public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm) {
@@ -85,6 +85,6 @@
 //        String token = jwtProvider.createToken(authentication);
 //        // Tạo đối tượng userprinciple từ authentication.getPrincipal
 //        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-//        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getName(), userPrinciple.getUsername(), userPrinciple.getEmail(), userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
+//        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getEmail(), userPrinciple.getUsername(), userPrinciple.getEmail(), userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
 //    }
 //}
