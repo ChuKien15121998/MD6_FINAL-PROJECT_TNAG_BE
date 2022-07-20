@@ -21,17 +21,8 @@ public class UserService implements IUserService {
         return userRepository.findByUsername(name);
     }
 
-    public Optional<AppUser> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
     public Boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    public Boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
     }
 
     @Override
@@ -51,16 +42,6 @@ public class UserService implements IUserService {
 
     public Page<AppUser> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
-    }
-
-    public Boolean checkExistsByEmail(String email) {
-        Iterable<AppUser> users = userRepository.checkExistsByEmail(email);
-        for (AppUser user: users) {
-            if (user.getEmail().equals(email)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
