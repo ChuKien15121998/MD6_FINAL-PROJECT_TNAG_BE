@@ -1,5 +1,6 @@
 package com.codegym.service;
 
+import com.codegym.model.AppUser;
 import com.codegym.model.Merchant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +17,7 @@ public interface IMerchantService extends IGeneralService<Merchant> {
     Merchant save (Merchant merchant);
 
     void deleteById(Long id);
+
+    Optional<Merchant> findMerchantByAppUser(AppUser appUser);
+
 }

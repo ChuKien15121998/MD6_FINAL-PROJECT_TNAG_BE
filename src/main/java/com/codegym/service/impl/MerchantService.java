@@ -1,5 +1,6 @@
 package com.codegym.service.impl;
 
+import com.codegym.model.AppUser;
 import com.codegym.model.Merchant;
 import com.codegym.repository.IMerchantRepository;
 import com.codegym.service.IMerchantService;
@@ -47,6 +48,10 @@ public class MerchantService implements IMerchantService {
     @Override
     public void deleteById(Long id) {
         merchantRepository.deleteById(id);
+    }
+
+    public Optional<Merchant> findMerchantByAppUser(AppUser appUser) {
+        return merchantRepository.findMerchantByAppUser(appUser);
     }
 
     @Override
