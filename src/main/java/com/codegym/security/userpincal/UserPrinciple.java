@@ -13,10 +13,8 @@ import java.util.stream.Collectors;
 public class UserPrinciple implements UserDetails {
     private Long id;
     private String username;
-    private String email;
     @JsonIgnore
     private String password;
-    private String avatar;
     private Collection<? extends GrantedAuthority> roles;
 
     @Override
@@ -27,20 +25,10 @@ public class UserPrinciple implements UserDetails {
     public UserPrinciple() {
     }
 
-    public UserPrinciple(Long id, String email, String password, String avatar, Collection<? extends GrantedAuthority> roles) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.avatar = avatar;
-        this.roles = roles;
-    }
-
-    public UserPrinciple(Long id, String username, String email, String password, String avatar, Collection<? extends GrantedAuthority> roles) {
+    public UserPrinciple(Long id, String username, String password, Collection<? extends GrantedAuthority> roles) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.password = password;
-        this.avatar = avatar;
         this.roles = roles;
     }
 
@@ -49,20 +37,9 @@ public class UserPrinciple implements UserDetails {
         return new UserPrinciple(
                 appUser.getId(),
                 appUser.getUsername(),
-                appUser.getEmail(),
                 appUser.getPassword(),
-                appUser.getAvatar(),
                 authorities
         );
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-
-    public String getEmail() {
-        return email;
     }
 
     @Override
