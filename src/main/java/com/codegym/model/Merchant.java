@@ -53,6 +53,8 @@ public class Merchant {
         this.isActive = isActive;
     }
 
+
+
     public Long getId() {
         return id;
     }
