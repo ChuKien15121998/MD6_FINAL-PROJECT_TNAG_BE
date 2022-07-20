@@ -1,7 +1,6 @@
 package com.codegym.controller;
 
 import com.codegym.dto.request.ChangeAddressCustomer;
-import com.codegym.dto.request.ChangeAvatar;
 import com.codegym.dto.request.CreateAddress;
 import com.codegym.dto.response.ResponseMessage;
 import com.codegym.model.Address;
@@ -16,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 

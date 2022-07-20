@@ -1,5 +1,4 @@
-package com.codegym.controller.food_controller;
-
+package com.codegym.controller;
 
 import com.codegym.model.Food;
 import com.codegym.service.impl.FoodService;
