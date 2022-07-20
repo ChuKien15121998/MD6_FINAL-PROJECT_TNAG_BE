@@ -1,7 +1,8 @@
-package com.codegym.service.food_service;
+package com.codegym.service.impl;
 
 import com.codegym.model.Food;
 import com.codegym.repository.IFoodRepository;
+import com.codegym.service.IFoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
