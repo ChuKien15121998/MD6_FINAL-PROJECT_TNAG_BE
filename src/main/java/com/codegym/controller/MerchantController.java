@@ -23,8 +23,9 @@ import java.util.Optional;
 public class MerchantController {
     @Autowired
     private IMerchantService merchantService;
+
     @GetMapping
-    public ResponseEntity<?> showListMerchant(@PageableDefault(sort = "name",direction = Sort.Direction.ASC)Pageable pageable) {
+    public ResponseEntity<?> showListMerchant(@PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<Merchant> merchants = merchantService.findAll(pageable);
         if (merchants.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -41,15 +42,14 @@ public class MerchantController {
         return new ResponseEntity<>(merchantOptional.get(), HttpStatus.OK);
     }
 
-    @PutMapping("/change-status/{id}")
-    public ResponseEntity<Merchant> updateStatusMerchant(@PathVariable Long id, @RequestBody Merchant merchant) {
+    @GetMapping("/change-status/{id}/{status}")
+    public ResponseEntity<Merchant> updateStatusMerchant(@PathVariable Long id, @PathVariable Long status) {
         Optional<Merchant> merchantOptional = merchantService.findById(id);
         if (!merchantOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Merchant newMerchant = merchantOptional.get();
-        newMerchant.setId(id);
-        newMerchant.setActive(!merchant.getActive());
+        newMerchant.setActive(status == 1 ? true : false);
         return new ResponseEntity<>(merchantService.save(newMerchant), HttpStatus.OK);
     }
 
