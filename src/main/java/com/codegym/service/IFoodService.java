@@ -1,6 +1,7 @@
 package com.codegym.service;
 
 import com.codegym.model.Food;
+import com.codegym.model.Merchant;
 import com.codegym.service.IGeneralService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,6 @@ public interface IFoodService extends IGeneralService<Food> {
     Page<Food> findAllPageable(Pageable pageable);
 
     Page<Food> findAllByMerchantId(Long id, Pageable pageable);
+
+    Iterable<Food> findAllByMerchant (Merchant merchant);
 }

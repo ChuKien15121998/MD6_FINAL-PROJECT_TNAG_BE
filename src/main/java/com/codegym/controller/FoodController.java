@@ -1,6 +1,7 @@
 package com.codegym.controller;
 
-import com.codegym.model.Food;
+import com.codegym.model.*;
+import com.codegym.security.userpincal.UserDetailService;
 import com.codegym.service.impl.FoodService;
 import com.codegym.service.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -19,6 +22,9 @@ public class FoodController {
     FoodService foodService;
     @Autowired
     IMerchantService merchantService;
+
+    @Autowired
+    UserDetailService userDetailService;
 
     //Show list
     @GetMapping
@@ -32,6 +38,20 @@ public class FoodController {
     @GetMapping("/{merchant_id}")
     public ResponseEntity<Iterable<Food>> findAllById(@PathVariable Long merchant_id, Pageable pageable) {
         return new ResponseEntity<>(foodService.findAllByMerchantId(merchant_id, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/merchant")
+    public ResponseEntity<?> listFoodByMerchant() {
+        AppUser appUser = userDetailService.getCurrentUser();
+        Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser);
+        if (!merchant.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<Food> foods = foodService.findAllByMerchant(merchant.get());
+        if (foods != null) {
+            return new ResponseEntity<>(foods, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //Search by id
