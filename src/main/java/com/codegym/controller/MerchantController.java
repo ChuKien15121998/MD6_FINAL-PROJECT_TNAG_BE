@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,10 +24,7 @@ public class MerchantController {
     @Autowired
     private IMerchantService merchantService;
     @GetMapping
-    public ResponseEntity<?> showListMerchant(
-            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public ResponseEntity<?> showListMerchant(@PageableDefault(sort = "name",direction = Sort.Direction.ASC)Pageable pageable) {
         Page<Merchant> merchants = merchantService.findAll(pageable);
         if (merchants.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -51,7 +49,7 @@ public class MerchantController {
         }
         Merchant newMerchant = merchantOptional.get();
         newMerchant.setId(id);
-        newMerchant.setActive(merchant.getActive());
+        newMerchant.setActive(!merchant.getActive());
         return new ResponseEntity<>(merchantService.save(newMerchant), HttpStatus.OK);
     }
 
