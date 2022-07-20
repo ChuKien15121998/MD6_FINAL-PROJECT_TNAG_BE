@@ -85,4 +85,94 @@ public class MerchantController {
         newMerchant.setGoldPartner(merchant.isGoldPartner());
         return new ResponseEntity<>(merchantService.save(newMerchant), HttpStatus.OK);
     }
+
+    @PutMapping("/change-avatar")
+    public ResponseEntity<?> changeAvatar(HttpServletRequest request, @Valid @RequestBody ChangeAvatar changeAvatar) {
+        String jwt = jwtTokenFilter.getJwt(request);
+        String username = jwtProvider.getUserNameFromToken(jwt);
+        try {
+            if (changeAvatar.getAvatar() == null) {
+                return new ResponseEntity<>(new ResponseMessage("no"), HttpStatus.OK);
+            } else {
+                Optional<AppUser> appUser = userService.findByUsername(username);
+                if (!appUser.isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser.get());
+                merchant.get().setAvatar(changeAvatar.getAvatar());
+                merchantService.save(merchant.get());
+            }
+            return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+        } catch (UsernameNotFoundException exception) {
+            return new ResponseEntity<>(new ResponseMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/change-banner")
+    public ResponseEntity<?> changeBanner(HttpServletRequest request, @Valid @RequestBody ChangeAvatar changeAvatar) {
+        String jwt = jwtTokenFilter.getJwt(request);
+        String username = jwtProvider.getUserNameFromToken(jwt);
+        try {
+            if (changeAvatar.getAvatar() == null) {
+                return new ResponseEntity<>(new ResponseMessage("no"), HttpStatus.OK);
+            } else {
+                Optional<AppUser> appUser = userService.findByUsername(username);
+                if (!appUser.isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser.get());
+                merchant.get().setImageBanner(changeAvatar.getAvatar());
+                merchantService.save(merchant.get());
+            }
+            return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+        } catch (UsernameNotFoundException exception) {
+            return new ResponseEntity<>(new ResponseMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editMerchant(@PathVariable Long id, @RequestBody Merchant merchant) {
+        Optional<Merchant> merchantOptional = merchantService.findById(id);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        merchant.setId(merchantOptional.get().getId());
+        merchant.setPhoneNumber(merchantOptional.get().getPhoneNumber());
+        merchant.setGoldPartner(merchantOptional.get().isGoldPartner());
+        merchant.setAppUser(merchantOptional.get().getAppUser());
+        merchant.setActive(merchantOptional.get().isActive());
+        merchant.setAccept(merchantOptional.get().isAccept());
+        merchantService.save(merchant);
+        return new ResponseEntity<>(new ResponseMessage("update success"), HttpStatus.OK);
+    }
+
+    @PutMapping("/change-profile")
+    public ResponseEntity<?> changeProfile(HttpServletRequest request, @Valid @RequestBody ChangeProfileMerchant changeProfileMerchant) {
+        String jwt = jwtTokenFilter.getJwt(request);
+        String username = jwtProvider.getUserNameFromToken(jwt);
+        try {
+            if (changeProfileMerchant.getName() == null) {
+                return new ResponseEntity<>(new ResponseMessage("no_name"), HttpStatus.OK);
+            } else if (changeProfileMerchant.getOpenTime() == null){
+                return new ResponseEntity<>(new ResponseMessage("no_openTime"), HttpStatus.OK);
+            } else if (changeProfileMerchant.getCloseTime() == null){
+                return new ResponseEntity<>(new ResponseMessage("no_closeTime"), HttpStatus.OK);
+            } else if (changeProfileMerchant.getAddress() == null){
+                return new ResponseEntity<>(new ResponseMessage("no_address"), HttpStatus.OK);
+            } else {
+                Optional<AppUser> appUser = userService.findByUsername(username);
+                if (!appUser.isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser.get());
+                merchant.get().setName(changeProfileMerchant.getName());
+                merchant.get().setOpenTime(changeProfileMerchant.getOpenTime());
+                merchant.get().setCloseTime(changeProfileMerchant.getCloseTime());
+                merchant.get().setAddress(changeProfileMerchant.getAddress());
+                merchantService.save(merchant.get());
+            }
+            return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+        } catch (UsernameNotFoundException exception) {
+            return new ResponseEntity<>(new ResponseMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
 }
