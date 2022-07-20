@@ -72,15 +72,26 @@ public class MerchantController {
         return new ResponseEntity<>(merchantService.save(newMerchant), HttpStatus.OK);
     }
 
-    @PutMapping("/change-gold-status/{id}")
-    public ResponseEntity<Merchant> changeGoldPartnerStatus(@PathVariable Long id, @RequestBody Merchant merchant) {
+//    @PutMapping("/change-gold-status/{id}")
+//    public ResponseEntity<Merchant> changeGoldPartnerStatus(@PathVariable Long id, @RequestBody Merchant merchant) {
+//        Optional<Merchant> merchantOptional = merchantService.findById(id);
+//        if (!merchantOptional.isPresent()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        Merchant newMerchant = merchantOptional.get();
+//        newMerchant.setId(id);
+//        newMerchant.setGoldPartner(merchant.isGoldPartner());
+//        return new ResponseEntity<>(merchantService.save(newMerchant), HttpStatus.OK);
+//    }
+
+    @GetMapping("/change-gold-status/{id}/{status1}")
+    public ResponseEntity<Merchant> changeGoldPartnerStatus(@PathVariable Long id, @PathVariable Long status1) {
         Optional<Merchant> merchantOptional = merchantService.findById(id);
         if (!merchantOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Merchant newMerchant = merchantOptional.get();
-        newMerchant.setId(id);
-        newMerchant.setGoldPartner(merchant.isGoldPartner());
+        newMerchant.setGoldPartner(status1 == 1 ? true : false);
         return new ResponseEntity<>(merchantService.save(newMerchant), HttpStatus.OK);
     }
 }
