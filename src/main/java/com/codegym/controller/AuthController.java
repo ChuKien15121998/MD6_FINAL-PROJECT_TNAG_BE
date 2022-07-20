@@ -106,7 +106,7 @@ public class AuthController {
             signUpFormMerchant.setAvatar("https://firebasestorage.googleapis.com/v0/b/blog-firebase-c1eff.appspot.com/o/images%2F765-default-avatar.png?alt=media&token=913a079e-dbff-4ff1-a15b-be184446f58b");
         }
         if (signUpFormMerchant.getImageBanner() == null || signUpFormMerchant.getImageBanner().trim().isEmpty()) {
-            signUpFormMerchant.setAvatar("https://firebasestorage.googleapis.com/v0/b/blog-firebase-c1eff.appspot.com/o/images%2F765-default-avatar.png?alt=media&token=913a079e-dbff-4ff1-a15b-be184446f58b");
+            signUpFormMerchant.setImageBanner("https://firebasestorage.googleapis.com/v0/b/blog-firebase-c1eff.appspot.com/o/images%2F765-default-avatar.png?alt=media&token=913a079e-dbff-4ff1-a15b-be184446f58b");
         }
         MerchantRegisterRequest merchant = new MerchantRegisterRequest();
         merchant.setName(signUpFormMerchant.getName());
