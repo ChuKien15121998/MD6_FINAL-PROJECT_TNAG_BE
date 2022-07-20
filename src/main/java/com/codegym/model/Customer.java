@@ -11,6 +11,8 @@ public class Customer {
     private Long id;
     @NotBlank
     private String name;
+    @Lob
+    private String avatar;
     @NotBlank
     private String phoneNumber;
     @OneToOne
@@ -20,11 +22,27 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(Long id, String name, String phoneNumber, AppUser appUser) {
-        this.id = id;
+    public Customer(String name, String avatar, String phoneNumber, AppUser appUser) {
         this.name = name;
+        this.avatar = avatar;
         this.phoneNumber = phoneNumber;
         this.appUser = appUser;
+    }
+
+    public Customer(Long id, String name, String avatar, String phoneNumber, AppUser appUser) {
+        this.id = id;
+        this.name = name;
+        this.avatar = avatar;
+        this.phoneNumber = phoneNumber;
+        this.appUser = appUser;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Long getId() {
