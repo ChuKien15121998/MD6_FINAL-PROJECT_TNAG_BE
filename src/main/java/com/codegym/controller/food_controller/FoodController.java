@@ -2,9 +2,11 @@ package com.codegym.controller.food_controller;
 
 
 import com.codegym.model.Food;
-import com.codegym.model.Merchant;
+
+import com.codegym.service.IMerchantService;
 import com.codegym.service.food_service.FoodService;
-import com.codegym.service.merchant_service.MerchantService;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,7 +24,7 @@ public class FoodController {
     @Autowired
     FoodService foodService;
     @Autowired
-    MerchantService merchantService;
+    IMerchantService merchantService;
 
     //Show list
     @GetMapping

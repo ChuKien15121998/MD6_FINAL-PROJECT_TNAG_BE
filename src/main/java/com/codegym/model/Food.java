@@ -23,8 +23,10 @@ public class Food {
     private Boolean recommend;
     @Column (columnDefinition = "BIGINT default 0")
     private Long sold;
-//    @NotBlank
-    @Column(name = "is_Delete", columnDefinition = "boolean default true")
+
+    @NotBlank
+    @Column(name = "isDelete", columnDefinition = "boolean default false")
+
     private Boolean isDelete;
     @ManyToOne
     private FoodCategory foodCategory;
