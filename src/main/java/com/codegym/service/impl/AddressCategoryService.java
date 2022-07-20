@@ -4,9 +4,10 @@ import com.codegym.model.AddressCategory;
 import com.codegym.repository.IAddressCategoryRepository;
 import com.codegym.service.IAddressCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class AddressCategoryService implements IAddressCategoryService {
     @Autowired
     IAddressCategoryRepository addressCategoryRepository;
