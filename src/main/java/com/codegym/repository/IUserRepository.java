@@ -15,12 +15,6 @@ public interface IUserRepository extends JpaRepository<AppUser, Long> {
 
     Boolean existsByUsername(String username);
 
-    Optional<AppUser> findByEmail(String email); //Tim kiem User co ton tai trong DB khong?
-
-    Boolean existsByEmail(String email);
-
     Optional<AppUser> findById(Long id);
 
-    @Query(value = "select * from users where email not like :email", nativeQuery = true)
-    Iterable<AppUser> checkExistsByEmail(String email);
 }

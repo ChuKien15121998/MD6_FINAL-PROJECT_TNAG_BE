@@ -17,18 +17,22 @@ public class Merchant {
     @NotBlank
     @Pattern(regexp = "^0[0-9]{8,9}$")
     private String phoneNumber;
+    @Lob
+    private String avatar;
+    @Lob
+    private String imageBanner;
     @Column(columnDefinition = "TIME")
     private String openTime;
     @Column(columnDefinition = "TIME")
     private String closeTime;
     @NotBlank
     private String address;
-    @Column(name = "gold")
-    private Boolean goldPartner;
+    @Column(name = "gold", columnDefinition = "boolean default false")
+    private boolean goldPartner;
     @Column(name = "isAccept", columnDefinition = "boolean default false")
-    private Boolean isAccept;
+    private boolean isAccept;
     @Column(name = "isActive", columnDefinition = "boolean default true")
-    private Boolean isActive;
+    private boolean isActive;
     @OneToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;
@@ -36,10 +40,11 @@ public class Merchant {
     public Merchant() {
     }
 
-    public Merchant(Long id, String name, String phoneNumber, String openTime, String closeTime, String address, Boolean goldPartner, Boolean isAccept, Boolean isActive, AppUser appUser) {
-        this.id = id;
+    public Merchant(String name, String phoneNumber, String avatar, String imageBanner, String openTime, String closeTime, String address, boolean goldPartner, boolean isAccept, boolean isActive, AppUser appUser) {
         this.name = name;
         this.phoneNumber = phoneNumber;
+        this.avatar = avatar;
+        this.imageBanner = imageBanner;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.address = address;
@@ -49,7 +54,23 @@ public class Merchant {
         this.appUser = appUser;
     }
 
-    public Merchant(Boolean isActive) {
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getImageBanner() {
+        return imageBanner;
+    }
+
+    public void setImageBanner(String imageBanner) {
+        this.imageBanner = imageBanner;
+    }
+
+    public Merchant(boolean isActive) {
         this.isActive = isActive;
     }
 
@@ -101,27 +122,27 @@ public class Merchant {
         this.address = address;
     }
 
-    public Boolean getGoldPartner() {
+    public boolean isGoldPartner() {
         return goldPartner;
     }
 
-    public void setGoldPartner(Boolean goldPartner) {
+    public void setGoldPartner(boolean goldPartner) {
         this.goldPartner = goldPartner;
     }
 
-    public Boolean getAccept() {
+    public boolean isAccept() {
         return isAccept;
     }
 
-    public void setAccept(Boolean accept) {
+    public void setAccept(boolean accept) {
         isAccept = accept;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         isActive = active;
     }
 

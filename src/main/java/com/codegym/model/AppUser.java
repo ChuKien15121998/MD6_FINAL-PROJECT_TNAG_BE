@@ -13,9 +13,6 @@ import java.util.Set;
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "username"
-        }),
-        @UniqueConstraint(columnNames = {
-                "email"
         })
 })
 public class AppUser {
@@ -23,18 +20,13 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(min = 3, max = 50)
-    private String username;
-    @NotBlank
     @Size(max = 50)
     @Email
-    private String email;
+    private String username;
     @JsonIgnore
     @NotBlank
     @Size(min = 6, max = 100)
     private String password;
-    @Lob
-    private String avatar;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -43,39 +35,18 @@ public class AppUser {
     public AppUser() {
     }
 
-    public AppUser(Long id, String username, String email, String password, String avatar, Set<Role> roles) {
-        this.id = id;
+    public AppUser(String username, String password, Set<Role> roles) {
         this.username = username;
-        this.email = email;
         this.password = password;
-        this.avatar = avatar;
-        this.roles = roles;
-    }
-
-    public AppUser(String email, String password, String avatar, Set<Role> roles) {
-        this.email = email;
-        this.password = password;
-        this.avatar = avatar;
-        this.roles = roles;
-    }
-
-    public AppUser(String email, String avatar, Set<Role> roles) {
-        this.email = email;
-        this.avatar = avatar;
         this.roles = roles;
     }
 
     public AppUser(@NotBlank
                    @Size(min = 3, max = 50) String username,
-                   @Size(max = 50)
-                   @Email String email,
                    @NotBlank
-                   @Size(min = 6, max = 100) String encode,
-                   String avatar) {
+                   @Size(min = 6, max = 100) String encode) {
         this.username = username;
-        this.email = email;
         this.password = encode;
-        this.avatar = avatar;
     }
 
     public String getUsername() {
@@ -94,14 +65,6 @@ public class AppUser {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -110,30 +73,11 @@ public class AppUser {
         this.password = password;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", roles=" + roles +
-                '}';
     }
 }
