@@ -1,6 +1,7 @@
 package com.codegym.service.impl;
 
 import com.codegym.model.Address;
+import com.codegym.model.Customer;
 import com.codegym.repository.IAddressRepository;
 import com.codegym.service.IAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,13 @@ public class AddressService implements IAddressService {
 
     public void remove(Long id) {
         addressRepository.deleteById(id);
+    }
+
+    public Iterable<Address> findAddressByCustomer(Customer customer) {
+        return addressRepository.findAddressByCustomer(customer);
+    }
+
+    public Boolean existsByNameAddress(String nameAddress) {
+        return addressRepository.existsByNameAddress(nameAddress);
     }
 }

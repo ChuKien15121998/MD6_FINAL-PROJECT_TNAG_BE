@@ -1,5 +1,6 @@
 package com.codegym.service.impl;
 
+import com.codegym.model.AppUser;
 import com.codegym.model.Customer;
 import com.codegym.repository.ICustomerRepository;
 import com.codegym.service.ICustomerService;
@@ -15,6 +16,10 @@ public class CustomerService implements ICustomerService {
 
     public Optional<Customer> findCustomerByAppUser_Id(Long id) {
         return customerRepository.findCustomerByAppUser_Id(id);
+    }
+
+    public Optional<Customer> findCustomerByAppUser(AppUser appUser) {
+        return customerRepository.findCustomerByAppUser(appUser);
     }
 
     public Iterable<Customer> findAll() {
