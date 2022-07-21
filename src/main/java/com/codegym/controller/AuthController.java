@@ -79,8 +79,8 @@ public class AuthController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm) {
+    @PostMapping("customer/signin")
+    public ResponseEntity<?> loginCustomer(@Valid @RequestBody SignInForm signInForm) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword())
         );
@@ -90,6 +90,30 @@ public class AuthController {
         String token = jwtProvider.createToken(authentication);
         // Tạo đối tượng userprinciple từ authentication.getPrincipal
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
+        Optional<AppUser> appUser = userService.findByUsername(signInForm.getUsername());
+        Optional<Customer> customer = customerService.findCustomerByAppUser(appUser.get());
+        if (!customer.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
+    }
+
+    @PostMapping("merchant/signin")
+    public ResponseEntity<?> loginMerchant(@Valid @RequestBody SignInForm signInForm) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword())
+        );
+        // Thêm đối tượng này vào security để xử lý tiếp
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // Khởi tạo jwt từ đối tượng này
+        String token = jwtProvider.createToken(authentication);
+        // Tạo đối tượng userprinciple từ authentication.getPrincipal
+        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
+        Optional<AppUser> appUser = userService.findByUsername(signInForm.getUsername());
+        Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser.get());
+        if (!merchant.isPresent() || !merchant.get().isActive()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
 
@@ -139,7 +163,9 @@ public class AuthController {
         AppUser appUser = new AppUser(mrr.getUsername(), (mrr.getPassword()));
         Set<Role> roles = new HashSet<>();
         Role merchantRole = roleService.findByName(RoleName.MERCHANT).orElseThrow(() -> new RuntimeException("Role not found"));
+        Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
         roles.add(merchantRole);
+        roles.add(userRole);
         appUser.setRoles(roles);
         userService.save(appUser);
         // tao dt merchant moi va luu db
@@ -153,13 +179,13 @@ public class AuthController {
         merchant.setAddress(mrr.getAddress());
         merchant.setAppUser(appUser);
         merchant.setAccept(true);
-        merchant.setActive(true);
-        merchant.setGoldPartner(false);
+        Customer customer = new Customer(mrr.getName(), mrr.getAvatar(), mrr.getPhone(), appUser);
         // thay doi merchanRegisterRequest ==> reviewed=true, accepted = true
         mrr.setReviewed(true);
         mrr.setAccept(true);
         //luu thay doi vao DB
         merchantService.save(merchant);
+        customerService.save(customer);
         merchantRegisterRequestService.save(mrr);
         String siteURL = getSiteURL(request);
         sendEmailAccept(appUser, merchant, siteURL);
