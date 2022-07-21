@@ -45,7 +45,7 @@ public class FoodService implements IFoodService {
         return foodRepository.findAllByMerchant(merchant);
     }
 
-    public Page<Food> findAllByNameContaining(Pageable pageable, String name) {
-        return foodRepository.findAllByNameContaining(pageable, name);
+    public Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable) {
+        return foodRepository.findAllByNameContaining(name, id, pageable);
     }
 }
