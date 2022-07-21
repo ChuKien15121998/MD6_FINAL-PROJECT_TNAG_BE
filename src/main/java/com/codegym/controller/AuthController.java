@@ -160,11 +160,11 @@ public class AuthController {
         merchantService.save(merchant);
         merchantRegisterRequestService.save(mrr);
         String siteURL = getSiteURL(request);
-        sendEmail(appUser, merchant, siteURL);
+        sendEmailAccept(appUser, merchant, siteURL);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
-    public void sendEmail(AppUser appUser,Merchant merchant, String siteURL) throws UnsupportedEncodingException, MessagingException {
+    public void sendEmailAccept(AppUser appUser,Merchant merchant, String siteURL) throws UnsupportedEncodingException, MessagingException {
         String signURL =siteURL + "/signin";
         System.out.println(signURL);
         String toAddress = appUser.getUsername();
@@ -191,7 +191,7 @@ public class AuthController {
     }
 
     @PostMapping("/refuse/{id}")
-    public ResponseEntity<?> refuseRegisterRequest(@PathVariable Long id) {
+    public ResponseEntity<?> refuseRegisterRequest(@PathVariable Long id, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         Optional<MerchantRegisterRequest> findMerchantRegisterRequest = merchantRegisterRequestService.findById(id);
         if (!findMerchantRegisterRequest.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -200,7 +200,29 @@ public class AuthController {
         mrr.setReviewed(true);
         mrr.setAccept(false);
         merchantRegisterRequestService.save(mrr);
+        String siteURL = getSiteURL(request);
+        sendEmailRefuse(mrr, siteURL);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public void sendEmailRefuse(MerchantRegisterRequest merchantRegisterRequest, String siteURL) throws UnsupportedEncodingException, MessagingException {
+        String signURL =siteURL + "/signin";
+        System.out.println(signURL);
+        String toAddress = merchantRegisterRequest.getUsername();
+        String fromAddress = "chuvankien151298@gmail.com";
+        String senderName = "What will you have for lunch?";
+        String subject = "Thanks for your registration as merchant";
+        String mailContent = "<p>Dear " + merchantRegisterRequest.getName()+",</p>";
+        mailContent += "<p>Your registration has been refused</p>";
+        mailContent += "<p>Thank you<br>Group What will you have for lunch?</p>";
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom(fromAddress,senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+        helper.setText(mailContent, true);
+        mailSender.send(message);
+        System.out.println("Email has been sent");
     }
 
 }
