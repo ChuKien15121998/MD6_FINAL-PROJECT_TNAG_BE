@@ -9,6 +9,7 @@ import com.codegym.model.Customer;
 import com.codegym.model.Merchant;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.jwt.JwtTokenFilter;
+import com.codegym.security.userpincal.UserDetailService;
 import com.codegym.service.IMerchantService;
 import com.codegym.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class MerchantController {
     @Autowired
     JwtProvider jwtProvider;
 
+    @Autowired
+    UserDetailService userDetailService;
+
     @GetMapping
     public ResponseEntity<?> showListMerchant(@PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<Merchant> merchants = merchantService.findAll(pageable);
@@ -49,6 +53,13 @@ public class MerchantController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(merchants, HttpStatus.OK);
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<?> showDetailMerchant() {
+        AppUser appUser = userDetailService.getCurrentUser();
+        Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser);
+        return new ResponseEntity<>(merchant, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -97,6 +108,7 @@ public class MerchantController {
     @PutMapping("/change-avatar")
     public ResponseEntity<?> changeAvatar(HttpServletRequest request, @Valid @RequestBody ChangeAvatar changeAvatar) {
         String jwt = jwtTokenFilter.getJwt(request);
+        System.out.println(jwt);
         String username = jwtProvider.getUserNameFromToken(jwt);
         try {
             if (changeAvatar.getAvatar() == null) {

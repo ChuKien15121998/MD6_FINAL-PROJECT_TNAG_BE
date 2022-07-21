@@ -95,7 +95,7 @@ public class AuthController {
         if (!customer.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(),customer.get().getName(), customer.get().getAvatar(), userPrinciple.getAuthorities()));
     }
 
     @PostMapping("merchant/signin")
