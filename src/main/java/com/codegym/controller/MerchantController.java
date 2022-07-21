@@ -10,7 +10,6 @@ import com.codegym.model.Merchant;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.jwt.JwtTokenFilter;
 import com.codegym.service.IMerchantService;
-import jdk.vm.ci.meta.Constant;
 import com.codegym.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
