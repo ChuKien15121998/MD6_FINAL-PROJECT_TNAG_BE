@@ -4,13 +4,16 @@ import com.codegym.model.Food;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface IFoodRepository extends JpaRepository<Food, Long> {
 
+    @Query(value = "SELECT * FROM foods where is_delete = true and merchant_id = ?1", nativeQuery = true)
     Page<Food> findAllByMerchantId(Long id, Pageable pageable);
 
-    Page<Food> findAllByNameContaining(Pageable pageable, String name);
+    @Query(value = "SELECT * FROM foods where is_delete = true and name like ?1 and merchant_id = ?2", nativeQuery = true)
+    Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable);
 
 }

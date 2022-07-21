@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/foods")
@@ -31,6 +34,7 @@ public class FoodController {
     //Show list theo merchant
     @GetMapping("/{merchant_id}")
     public ResponseEntity<Iterable<Food>> findAllById(@PathVariable Long merchant_id, Pageable pageable) {
+
         return new ResponseEntity<>(foodService.findAllByMerchantId(merchant_id, pageable), HttpStatus.OK);
     }
 
@@ -41,15 +45,21 @@ public class FoodController {
     }
 
     //Search by name
-    @GetMapping("/search-by-food-name")
-    public ResponseEntity<Iterable<Food>> findAllByNameContaining(@RequestParam String name, @PageableDefault Pageable pageable) {
-        return new ResponseEntity<>(foodService.findAllByNameContaining(pageable, name), HttpStatus.OK);
+    @GetMapping("/{id}/search-by-food-name")
+    public ResponseEntity<Iterable<Food>> findAllByNameContaining(@PathVariable Long id, @RequestParam String name, @PageableDefault Pageable pageable) {
+        return new ResponseEntity<>(foodService.findAllByNameContaining('%'+name+'%', id,pageable),HttpStatus.OK);
     }
 
     //Create food
     @PostMapping("/{merchant_id}")
     public ResponseEntity add(@RequestBody Food food, @PathVariable Long merchant_id) {
         food.setMerchant(merchantService.findById(merchant_id).get());
+        food.setDelete(true);
+        if (food.getImage().equals("")) {
+            food.setImage("https://firebasestorage.googleapis.com/v0/b/fir-470c3.appspot.com/o/z3578349206972_f4eb9fa8a74840c95635b0f81642e08d.jpg?alt=media&token=02cfb780-a065-4f28-819e-8b1d5a432be5");
+        }
+        food.setRecommend(false);
+        food.setSold(0L);
         foodService.save(food);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -57,17 +67,25 @@ public class FoodController {
     //Delete food
     @PutMapping("/delete-food/{food_id}")
     public ResponseEntity<Food> delete(@PathVariable Long food_id) {
-        foodService.findById(food_id).get().setDelete(false);
-        return new ResponseEntity<>(foodService.findById(food_id).get(), HttpStatus.OK);
+        Optional<Food> food = foodService.findById(food_id);
+        food.get().setDelete(false);
+        return new ResponseEntity<>(foodService.save(food.get()), HttpStatus.OK);
     }
 
     //Update food
     @PutMapping("/update-food/{food_id}")
     public ResponseEntity<Food> edit(@RequestBody Food food, @PathVariable Long food_id) {
+        Optional<Food> foodOptional = foodService.findById(food_id);
         food.setId(food_id);
         food.setDelete(true);
+        food.setMerchant(foodOptional.get().getMerchant());
+        food.setRecommend(false);
+        food.setSold(foodOptional.get().getSold());
+        if (food.getImage().equals("")){
+            food.setImage(foodOptional.get().getImage());
+        }
         foodService.save(food);
-        return new ResponseEntity<>(foodService.findById(food_id).get(), HttpStatus.OK);
+        return new ResponseEntity<>(foodService.save(food), HttpStatus.OK);
     }
 
 
