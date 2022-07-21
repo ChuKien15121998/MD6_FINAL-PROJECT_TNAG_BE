@@ -1,6 +1,7 @@
 package com.codegym.repository;
 
 import com.codegym.model.Food;
+import com.codegym.model.Merchant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,7 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
 
     @Query(value = "SELECT * FROM foods where is_delete = true and name like ?1 and merchant_id = ?2", nativeQuery = true)
     Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable);
+
+    Iterable<Food> findAllByMerchant (Merchant merchant);
 
 }

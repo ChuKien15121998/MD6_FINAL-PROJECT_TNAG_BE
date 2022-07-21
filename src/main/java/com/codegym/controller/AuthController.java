@@ -79,8 +79,8 @@ public class AuthController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm) {
+    @PostMapping("customer/signin")
+    public ResponseEntity<?> loginCustomer(@Valid @RequestBody SignInForm signInForm) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword())
         );
@@ -90,6 +90,30 @@ public class AuthController {
         String token = jwtProvider.createToken(authentication);
         // Tạo đối tượng userprinciple từ authentication.getPrincipal
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
+        Optional<AppUser> appUser = userService.findByUsername(signInForm.getUsername());
+        Optional<Customer> customer = customerService.findCustomerByAppUser(appUser.get());
+        if (!customer.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
+    }
+
+    @PostMapping("merchant/signin")
+    public ResponseEntity<?> loginMerchant(@Valid @RequestBody SignInForm signInForm) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword())
+        );
+        // Thêm đối tượng này vào security để xử lý tiếp
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // Khởi tạo jwt từ đối tượng này
+        String token = jwtProvider.createToken(authentication);
+        // Tạo đối tượng userprinciple từ authentication.getPrincipal
+        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
+        Optional<AppUser> appUser = userService.findByUsername(signInForm.getUsername());
+        Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser.get());
+        if (!merchant.isPresent() || !merchant.get().isActive()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
 
@@ -106,7 +130,7 @@ public class AuthController {
             signUpFormMerchant.setAvatar("https://firebasestorage.googleapis.com/v0/b/blog-firebase-c1eff.appspot.com/o/images%2F765-default-avatar.png?alt=media&token=913a079e-dbff-4ff1-a15b-be184446f58b");
         }
         if (signUpFormMerchant.getImageBanner() == null || signUpFormMerchant.getImageBanner().trim().isEmpty()) {
-            signUpFormMerchant.setAvatar("https://firebasestorage.googleapis.com/v0/b/blog-firebase-c1eff.appspot.com/o/images%2F765-default-avatar.png?alt=media&token=913a079e-dbff-4ff1-a15b-be184446f58b");
+            signUpFormMerchant.setImageBanner("https://firebasestorage.googleapis.com/v0/b/blog-firebase-c1eff.appspot.com/o/images%2F765-default-avatar.png?alt=media&token=913a079e-dbff-4ff1-a15b-be184446f58b");
         }
         MerchantRegisterRequest merchant = new MerchantRegisterRequest();
         merchant.setName(signUpFormMerchant.getName());
@@ -122,7 +146,7 @@ public class AuthController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("merchant/request")
     public ResponseEntity<?> findAllMerchantRegisterRequest() {
         Iterable<MerchantRegisterRequest> merchantRegisterRequest = merchantRegisterRequestService.findMerchantByReviewed(false);
         return new ResponseEntity<>(merchantRegisterRequest, HttpStatus.OK);
@@ -139,7 +163,9 @@ public class AuthController {
         AppUser appUser = new AppUser(mrr.getUsername(), (mrr.getPassword()));
         Set<Role> roles = new HashSet<>();
         Role merchantRole = roleService.findByName(RoleName.MERCHANT).orElseThrow(() -> new RuntimeException("Role not found"));
+        Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
         roles.add(merchantRole);
+        roles.add(userRole);
         appUser.setRoles(roles);
         userService.save(appUser);
         // tao dt merchant moi va luu db
@@ -153,18 +179,20 @@ public class AuthController {
         merchant.setAddress(mrr.getAddress());
         merchant.setAppUser(appUser);
         merchant.setAccept(true);
+        Customer customer = new Customer(mrr.getName(), mrr.getAvatar(), mrr.getPhone(), appUser);
         // thay doi merchanRegisterRequest ==> reviewed=true, accepted = true
         mrr.setReviewed(true);
         mrr.setAccept(true);
         //luu thay doi vao DB
         merchantService.save(merchant);
+        customerService.save(customer);
         merchantRegisterRequestService.save(mrr);
         String siteURL = getSiteURL(request);
-        sendEmail(appUser, merchant, siteURL);
+        sendEmailAccept(appUser, merchant, siteURL);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
-    public void sendEmail(AppUser appUser,Merchant merchant, String siteURL) throws UnsupportedEncodingException, MessagingException {
+    public void sendEmailAccept(AppUser appUser,Merchant merchant, String siteURL) throws UnsupportedEncodingException, MessagingException {
         String signURL =siteURL + "/signin";
         System.out.println(signURL);
         String toAddress = appUser.getUsername();
@@ -188,6 +216,41 @@ public class AuthController {
     private String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
+    }
+
+    @PostMapping("/refuse/{id}")
+    public ResponseEntity<?> refuseRegisterRequest(@PathVariable Long id, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+        Optional<MerchantRegisterRequest> findMerchantRegisterRequest = merchantRegisterRequestService.findById(id);
+        if (!findMerchantRegisterRequest.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        MerchantRegisterRequest mrr = findMerchantRegisterRequest.get();
+        mrr.setReviewed(true);
+        mrr.setAccept(false);
+        merchantRegisterRequestService.save(mrr);
+        String siteURL = getSiteURL(request);
+        sendEmailRefuse(mrr, siteURL);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public void sendEmailRefuse(MerchantRegisterRequest merchantRegisterRequest, String siteURL) throws UnsupportedEncodingException, MessagingException {
+        String signURL =siteURL + "/signin";
+        System.out.println(signURL);
+        String toAddress = merchantRegisterRequest.getUsername();
+        String fromAddress = "chuvankien151298@gmail.com";
+        String senderName = "What will you have for lunch?";
+        String subject = "Thanks for your registration as merchant";
+        String mailContent = "<p>Dear " + merchantRegisterRequest.getName()+",</p>";
+        mailContent += "<p>Your registration has been refused</p>";
+        mailContent += "<p>Thank you<br>Group What will you have for lunch?</p>";
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom(fromAddress,senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+        helper.setText(mailContent, true);
+        mailSender.send(message);
+        System.out.println("Email has been sent");
     }
 
 }

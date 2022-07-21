@@ -23,6 +23,10 @@ public class AddressCategory {
                 this.addressCategory = addressCategory;
         }
 
+        public AddressCategory(String addressCategory) {
+                this.addressCategory = addressCategory;
+        }
+
         public Long getId() {
                 return id;
         }
