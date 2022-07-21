@@ -190,4 +190,17 @@ public class AuthController {
         return siteURL.replace(request.getServletPath(), "");
     }
 
+    @PostMapping("/refuse/{id}")
+    public ResponseEntity<?> refuseRegisterRequest(@PathVariable Long id) {
+        Optional<MerchantRegisterRequest> findMerchantRegisterRequest = merchantRegisterRequestService.findById(id);
+        if (!findMerchantRegisterRequest.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        MerchantRegisterRequest mrr = findMerchantRegisterRequest.get();
+        mrr.setReviewed(true);
+        mrr.setAccept(false);
+        merchantRegisterRequestService.save(mrr);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
