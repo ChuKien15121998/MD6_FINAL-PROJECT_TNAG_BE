@@ -27,7 +27,7 @@ public class Merchant {
     private String closeTime;
     @NotBlank
     private String address;
-    @Column(name = "gold")
+    @Column(name = "gold_partner", columnDefinition = "boolean default false")
     private Boolean goldPartner;
     @Column(name = "is_Accept", columnDefinition = "boolean default false")
     private Boolean isAccept;
