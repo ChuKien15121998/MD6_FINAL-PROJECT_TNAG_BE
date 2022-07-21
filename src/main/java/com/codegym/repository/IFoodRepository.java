@@ -17,6 +17,7 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
     @Query(value = "SELECT * FROM foods where is_delete = true and name like ?1 and merchant_id = ?2", nativeQuery = true)
     Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable);
 
+    @Query(value = "SELECT * FROM foods where is_delete = true", nativeQuery = true)
     Iterable<Food> findAllByMerchant (Merchant merchant);
 
 }

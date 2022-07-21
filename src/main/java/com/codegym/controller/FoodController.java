@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.dto.response.ResponseMessage;
 import com.codegym.model.*;
 import com.codegym.security.userpincal.UserDetailService;
 import com.codegym.service.impl.FoodService;
@@ -78,7 +79,22 @@ public class FoodController {
         food.setRecommend(false);
         food.setSold(0L);
         foodService.save(food);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> createFood(@RequestBody Food food) {
+        AppUser appUser = userDetailService.getCurrentUser();
+        Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser);
+        food.setMerchant(merchant.get());
+        food.setDelete(true);
+        if (food.getImage().equals("")) {
+            food.setImage("https://firebasestorage.googleapis.com/v0/b/fir-470c3.appspot.com/o/z3578349206972_f4eb9fa8a74840c95635b0f81642e08d.jpg?alt=media&token=02cfb780-a065-4f28-819e-8b1d5a432be5");
+        }
+        food.setRecommend(false);
+        food.setSold(0L);
+        foodService.save(food);
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
     //Delete food
