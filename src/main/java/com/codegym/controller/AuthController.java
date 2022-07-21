@@ -122,7 +122,7 @@ public class AuthController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("merchant/request")
     public ResponseEntity<?> findAllMerchantRegisterRequest() {
         Iterable<MerchantRegisterRequest> merchantRegisterRequest = merchantRegisterRequestService.findMerchantByReviewed(false);
         return new ResponseEntity<>(merchantRegisterRequest, HttpStatus.OK);
@@ -153,6 +153,8 @@ public class AuthController {
         merchant.setAddress(mrr.getAddress());
         merchant.setAppUser(appUser);
         merchant.setAccept(true);
+        merchant.setActive(true);
+        merchant.setGoldPartner(false);
         // thay doi merchanRegisterRequest ==> reviewed=true, accepted = true
         mrr.setReviewed(true);
         mrr.setAccept(true);
