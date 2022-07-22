@@ -91,6 +91,10 @@ public class AuthController {
         // Tạo đối tượng userprinciple từ authentication.getPrincipal
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         Optional<AppUser> appUser = userService.findByUsername(signInForm.getUsername());
+        if(appUser.get().getUsername().equals("admin@gmail.com")){
+            return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(),userPrinciple.getAuthorities()));
+
+        }
         Optional<Customer> customer = customerService.findCustomerByAppUser(appUser.get());
         if (!customer.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -179,6 +183,8 @@ public class AuthController {
         merchant.setAddress(mrr.getAddress());
         merchant.setAppUser(appUser);
         merchant.setAccept(true);
+        merchant.setGoldPartner(false);
+        merchant.setActive(true);
         Customer customer = new Customer(mrr.getName(), mrr.getAvatar(), mrr.getPhone(), appUser);
         // thay doi merchanRegisterRequest ==> reviewed=true, accepted = true
         mrr.setReviewed(true);

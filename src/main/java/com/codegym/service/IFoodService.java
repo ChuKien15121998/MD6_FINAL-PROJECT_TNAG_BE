@@ -10,7 +10,6 @@ import java.util.Optional;
 
 public interface IFoodService extends IGeneralService<Food> {
 
-
     Iterable<Food> findAll();
 
     Optional<Food> findById(Long id);

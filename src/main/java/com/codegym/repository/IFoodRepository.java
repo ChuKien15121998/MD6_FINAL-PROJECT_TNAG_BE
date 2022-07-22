@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IFoodRepository extends JpaRepository<Food, Long> {
 
@@ -19,5 +20,6 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
 
     @Query(value = "SELECT * FROM foods where is_delete = true", nativeQuery = true)
     Iterable<Food> findAllByMerchant (Merchant merchant);
+
 
 }
