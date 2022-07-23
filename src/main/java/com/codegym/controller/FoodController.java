@@ -63,7 +63,7 @@ public class FoodController {
         if (!merchant.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Iterable<Food> foods = foodService.findAllByMerchant(merchant.get());
+        Iterable<Food> foods = foodService.findAllByMerchantAndIsDeleteTrue(merchant.get());
         if (foods != null) {
             return new ResponseEntity<>(foods, HttpStatus.OK);
         }
