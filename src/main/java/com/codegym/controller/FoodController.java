@@ -2,16 +2,22 @@ package com.codegym.controller;
 
 import com.codegym.dto.response.ResponseMessage;
 import com.codegym.model.*;
+import com.codegym.security.jwt.JwtProvider;
+import com.codegym.security.jwt.JwtTokenFilter;
 import com.codegym.security.userpincal.UserDetailService;
+import com.codegym.service.IUserService;
 import com.codegym.service.impl.FoodService;
 import com.codegym.service.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,12 +27,21 @@ import java.util.Optional;
 public class FoodController {
 
     @Autowired
+    JwtProvider jwtProvider;
+
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
+
+    @Autowired
     FoodService foodService;
     @Autowired
     IMerchantService merchantService;
 
     @Autowired
     UserDetailService userDetailService;
+
+    @Autowired
+    IUserService iUserService;
 
     //Show list
     @GetMapping
@@ -120,8 +135,18 @@ public class FoodController {
 
     //Update food
     @PutMapping("/update-food/{food_id}")
-    public ResponseEntity<Food> edit(@RequestBody Food food, @PathVariable Long food_id) {
+    public ResponseEntity<?> edit(@RequestBody Food food, @PathVariable Long food_id, HttpServletRequest httpServletRequest) {
+        String token = jwtTokenFilter.getJwt(httpServletRequest);
+        String userName = jwtProvider.getUserNameFromToken(token);
+//        Optional<AppUser> appUserOptional = Optional.ofNullable(iUserService.findByUsername(userName).orElseThrow(() -> new UsernameNotFoundException("Can not find user")));
+        Optional<AppUser> appUserOptional = iUserService.findByUsername(userName);
+        if (!appUserOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         Optional<Food> foodOptional = foodService.findById(food_id);
+        if (foodOptional.get().getMerchant().getAppUser() != appUserOptional.get()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         food.setId(food_id);
         food.setDelete(true);
         food.setMerchant(foodOptional.get().getMerchant());
