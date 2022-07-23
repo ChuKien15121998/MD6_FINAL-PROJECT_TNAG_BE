@@ -21,5 +21,5 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
     @Query(value = "SELECT * FROM foods where is_delete = true", nativeQuery = true)
     Iterable<Food> findAllByMerchant (Merchant merchant);
 
-
+    Iterable<Food> findAllByMerchantAndIsDeleteTrue (Merchant merchant);
 }

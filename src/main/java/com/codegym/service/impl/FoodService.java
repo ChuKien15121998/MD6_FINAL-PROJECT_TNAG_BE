@@ -45,6 +45,11 @@ public class FoodService implements IFoodService {
         return foodRepository.findAllByMerchant(merchant);
     }
 
+    @Override
+    public Iterable<Food> findAllByMerchantAndDeleteTrue(Merchant merchant) {
+        return foodRepository.findAllByMerchantAndIsDeleteTrue(merchant);
+    }
+
     public Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable) {
         return foodRepository.findAllByNameContaining(name, id, pageable);
     }

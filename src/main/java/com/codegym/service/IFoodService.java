@@ -23,4 +23,7 @@ public interface IFoodService extends IGeneralService<Food> {
     Page<Food> findAllByMerchantId(Long id, Pageable pageable);
 
     Iterable<Food> findAllByMerchant (Merchant merchant);
+
+    Iterable<Food> findAllByMerchantAndDeleteTrue (Merchant merchant);
+
 }

@@ -41,6 +41,20 @@ public class FoodController {
         return new ResponseEntity<>(foodService.findAllByMerchantId(merchant_id, pageable), HttpStatus.OK);
     }
 
+//    @GetMapping("/merchant")
+//    public ResponseEntity<?> listFoodByMerchant() {
+//        AppUser appUser = userDetailService.getCurrentUser();
+//        Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser);
+//        if (!merchant.isPresent()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        Iterable<Food> foods = foodService.findAllByMerchant(merchant.get());
+//        if (foods != null) {
+//            return new ResponseEntity<>(foods, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
+
     @GetMapping("/merchant")
     public ResponseEntity<?> listFoodByMerchant() {
         AppUser appUser = userDetailService.getCurrentUser();
@@ -48,7 +62,7 @@ public class FoodController {
         if (!merchant.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Iterable<Food> foods = foodService.findAllByMerchant(merchant.get());
+        Iterable<Food> foods = foodService.findAllByMerchantAndDeleteTrue(merchant.get());
         if (foods != null) {
             return new ResponseEntity<>(foods, HttpStatus.OK);
         }
