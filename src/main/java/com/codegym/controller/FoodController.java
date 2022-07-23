@@ -96,20 +96,6 @@ public class FoodController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
-//    @PostMapping()
-//    public ResponseEntity<?> createFood(@RequestBody Food food) {
-//        AppUser appUser = userDetailService.getCurrentUser();
-//        Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser);
-//        food.setMerchant(merchant.get());
-//        food.setDelete(true);
-//        if (food.getImage().equals("")) {
-//            food.setImage("https://firebasestorage.googleapis.com/v0/b/fir-470c3.appspot.com/o/z3578349206972_f4eb9fa8a74840c95635b0f81642e08d.jpg?alt=media&token=02cfb780-a065-4f28-819e-8b1d5a432be5");
-//        }
-//        food.setRecommend(false);
-//        food.setSold(0L);
-//        foodService.save(food);
-//        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
-//    }
     @PostMapping()
     public ResponseEntity<?> createFood(@RequestBody Food food) {
         AppUser appUser = userDetailService.getCurrentUser();
@@ -138,7 +124,6 @@ public class FoodController {
     public ResponseEntity<?> edit(@RequestBody Food food, @PathVariable Long food_id, HttpServletRequest httpServletRequest) {
         String token = jwtTokenFilter.getJwt(httpServletRequest);
         String userName = jwtProvider.getUserNameFromToken(token);
-//        Optional<AppUser> appUserOptional = Optional.ofNullable(iUserService.findByUsername(userName).orElseThrow(() -> new UsernameNotFoundException("Can not find user")));
         Optional<AppUser> appUserOptional = iUserService.findByUsername(userName);
         if (!appUserOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
