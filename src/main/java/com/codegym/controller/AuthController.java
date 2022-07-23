@@ -54,6 +54,9 @@ public class AuthController {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private CartService cartService;
+
     @PostMapping("customer/signup")
     public ResponseEntity<?> registerCustomer(@Valid @RequestBody SignUpFormCustomer signUpFormCustomer) {
         if (!signUpFormCustomer.getPassword().equals(signUpFormCustomer.getConfirmPassword())) {
@@ -76,6 +79,8 @@ public class AuthController {
         AddressCategory addressCategory = signUpFormCustomer.getAddressCategory();
         Address address = new Address(signUpFormCustomer.getAddress(), addressCategory, customer);
         addressService.save(address);
+        Cart cart = new Cart(customer);
+        cartService.save(cart);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 

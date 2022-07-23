@@ -1,6 +1,8 @@
 package com.codegym.service.impl;
 
+import com.codegym.model.Cart;
 import com.codegym.model.CartDetail;
+import com.codegym.model.Food;
 import com.codegym.repository.ICartDetailRepository;
 import com.codegym.service.ICartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +29,9 @@ public class CartDetailService implements ICartDetailService {
 
     public void remove(Long id) {
         cartDetailRepository.deleteById(id);
+    }
+
+    public Optional<CartDetail> findCartDetailByCartAndFood(Cart cart, Food food) {
+        return cartDetailRepository.findCartDetailByCartAndFood(cart, food);
     }
 }
