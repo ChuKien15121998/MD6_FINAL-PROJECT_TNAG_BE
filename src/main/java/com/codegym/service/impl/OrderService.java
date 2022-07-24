@@ -1,5 +1,7 @@
 package com.codegym.service.impl;
 
+import com.codegym.model.Customer;
+import com.codegym.model.Merchant;
 import com.codegym.model.Order;
 import com.codegym.repository.IOrderRepository;
 import com.codegym.service.IOrderSevice;
@@ -27,5 +29,15 @@ public class OrderService implements IOrderSevice {
 
     public void remove(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    public Iterable<Order> findAllByMerchant(Merchant merchant) {
+        return orderRepository.findAllByMerchantOrderByCreateAt(merchant);
+    }
+
+    @Override
+    public Iterable<Order> findAllByCustomer(Customer customer) {
+        return orderRepository.findAllByCustomerOrderByCreateAt(customer);
     }
 }
