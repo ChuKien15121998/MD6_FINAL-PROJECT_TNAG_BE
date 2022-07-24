@@ -13,6 +13,8 @@ public class CartDetail {
     private Cart cart;
     @ManyToOne
     private Food food;
+    @ManyToOne
+    private Merchant merchant;
     private double quantity;
     private double totalPrice;
 
@@ -32,6 +34,22 @@ public class CartDetail {
         this.food = food;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
+    }
+
+    public CartDetail(Cart cart, Food food, Merchant merchant, double quantity, double totalPrice) {
+        this.cart = cart;
+        this.food = food;
+        this.merchant = merchant;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
     }
 
     public Long getId() {
