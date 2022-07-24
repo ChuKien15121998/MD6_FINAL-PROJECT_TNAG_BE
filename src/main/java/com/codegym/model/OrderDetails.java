@@ -13,9 +13,7 @@ public class OrderDetails {
     private Food food;
     @ManyToOne
     private Order order;
-    @NotBlank
     private double quantity;
-    @NotBlank
     private double price;
 
     public OrderDetails() {

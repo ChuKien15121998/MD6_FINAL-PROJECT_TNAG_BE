@@ -10,12 +10,10 @@ public class Order {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
     private Date createAt;
     @ManyToOne
     private OrderStatus orderStatus;
     private double shippingFree = 10;
-    @NotBlank
     private double priceTotal;
     @ManyToOne
     private Customer customer;

@@ -3,6 +3,7 @@ package com.codegym.service.impl;
 import com.codegym.model.Cart;
 import com.codegym.model.CartDetail;
 import com.codegym.model.Food;
+import com.codegym.model.Merchant;
 import com.codegym.repository.ICartDetailRepository;
 import com.codegym.service.ICartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,17 @@ public class CartDetailService implements ICartDetailService {
         cartDetailRepository.deleteById(id);
     }
 
+    @Override
+    public Iterable<CartDetail> findAllByCartAndMerchant(Cart cart, Merchant merchant) {
+        return cartDetailRepository.findAllByCartAndMerchant(cart, merchant);
+    }
+
     public Optional<CartDetail> findCartDetailByCartAndFood(Cart cart, Food food) {
         return cartDetailRepository.findCartDetailByCartAndFood(cart, food);
+    }
+
+    @Override
+    public void deleteAllByCartAndMerchant(Cart cart, Merchant merchant) {
+        cartDetailRepository.deleteAllByCartAndMerchant(cart, merchant);
     }
 }
