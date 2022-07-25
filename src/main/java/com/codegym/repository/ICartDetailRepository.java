@@ -15,5 +15,7 @@ public interface ICartDetailRepository extends JpaRepository<CartDetail, Long> {
 
     void deleteAllByCartAndMerchant(Cart cart, Merchant merchant);
 
+    void deleteCartDetailByCartAndMerchant (Cart cart, Merchant merchant);
+
     Iterable<CartDetail> findAllByCartAndMerchant(Cart cart, Merchant merchant);
 }

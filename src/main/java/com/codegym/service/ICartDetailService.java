@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ICartDetailService extends IGeneralService<CartDetail> {
     Optional<CartDetail> findCartDetailByCartAndFood(Cart cart, Food food);
-    void deleteAllByCartAndMerchant(Cart cart, Merchant merchant);
+    void deleteCartDetailByCartAndMerchant(Cart cart, Merchant merchant);
 
     Iterable<CartDetail> findAllByCartAndMerchant(Cart cart, Merchant merchant);
 

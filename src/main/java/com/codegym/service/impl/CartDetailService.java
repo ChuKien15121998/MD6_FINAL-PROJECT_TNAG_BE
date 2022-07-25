@@ -42,7 +42,7 @@ public class CartDetailService implements ICartDetailService {
     }
 
     @Override
-    public void deleteAllByCartAndMerchant(Cart cart, Merchant merchant) {
-        cartDetailRepository.deleteAllByCartAndMerchant(cart, merchant);
+    public void deleteCartDetailByCartAndMerchant(Cart cart, Merchant merchant) {
+        cartDetailRepository.deleteCartDetailByCartAndMerchant(cart, merchant);
     }
 }

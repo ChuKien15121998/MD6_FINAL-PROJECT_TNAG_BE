@@ -162,4 +162,12 @@ public class OrderController {
     }
 
 
+    @DeleteMapping("/deleteOrderDetail/{cartId}/{merchantId}")
+    ResponseEntity<?> deleteOrderDetail(@PathVariable Long cartId, @PathVariable Long merchantId){
+        Cart cart = cartService.findById(cartId).get();
+        Merchant merchant = merchantService.findById(merchantId).get();
+        cartDetailService.deleteCartDetailByCartAndMerchant(cart,merchant);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
