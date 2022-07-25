@@ -25,7 +25,6 @@ public class MerchantRegisterRequestService implements IMerchantRegisterService 
     public MerchantRegisterRequest save(MerchantRegisterRequest merchantRegisterRequest) {
         return merchantRegisterRepository.save(merchantRegisterRequest);
     }
-
     public void remove(Long id) {
         merchantRegisterRepository.deleteById(id);
     }

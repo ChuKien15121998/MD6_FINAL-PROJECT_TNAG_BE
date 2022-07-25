@@ -45,4 +45,8 @@ public class OrderService implements IOrderService {
     public Iterable<Order> findAllByOrderStatus(OrderStatus orderStatus) {
         return orderRepository.findAllByOrderStatus(orderStatus);
     }
+
+    public Iterable<Order> merchantSearch(String search) {
+        return orderRepository.merchantSearch(search);
+    }
 }

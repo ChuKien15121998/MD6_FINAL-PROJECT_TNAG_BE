@@ -28,8 +28,12 @@ public interface IFoodService extends IGeneralService<Food> {
 
     Iterable<Food> listSoldTop8();
 
+<<<<<<< HEAD
     Iterable<Food> showListFoodByCategory(Long id);
 
     Iterable<Food> findByNameFoodByUser(String name);
+=======
+    Iterable<Food> listNewestFood();
+>>>>>>> 8f6ef77f7e6c3b1d68eff802cbaef9e3ad1f192c
 
 }
