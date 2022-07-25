@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.dto.request.CartDetailDto;
 import com.codegym.model.*;
 import com.codegym.security.userpincal.UserDetailService;
 import com.codegym.service.*;
@@ -128,17 +129,16 @@ public class OrderController {
         return new ResponseEntity<>(orderService.save(order), HttpStatus.OK);
     }
 
-    @PostMapping("/createOrder/{cartId}/{merchantId}")
-    ResponseEntity<?> createOrder(@PathVariable Long cartId, @PathVariable Long merchantId) {
+    @PostMapping("/createOrder/{merchantId}")
+    ResponseEntity<?> createOrder(@PathVariable Long merchantId, @RequestBody CartDetailDto cartDetailDto) {
         AppUser appUser = userDetailsService.getCurrentUser();
         Optional<Customer> customerOptional = customerService.findCustomerByAppUser(appUser);
         if (!customerOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Customer customer = customerOptional.get();
-        Cart cart = cartService.findById(cartId).get();
         Merchant merchant = merchantService.findById(merchantId).get();
-        Iterable<CartDetail> cartDetails = cartDetailService.findAllByCartAndMerchant(cart, merchant);
+        Iterable<CartDetail> cartDetails = cartDetailDto.getCartDetails();
         double totalOrderPrice = 0;
         Order order = new Order();
         order.setOrderStatus(orderStatusService.findByNameOrderStatus("WAIT").get());
@@ -154,14 +154,12 @@ public class OrderController {
             orderDetails.setQuantity(cartDetail.getQuantity());
             orderDetails.setPrice(cartDetail.getTotalPrice());
             orderDetailService.save(orderDetails);
-            cartDetailService.remove(cartDetail.getId()); // kien
+            cartDetailService.remove(cartDetail.getId());
         }
         order.setPriceTotal(totalOrderPrice);
         orderService.save(order);
-//        cartDetailService.deleteAllByCartAndMerchant(cart, merchant);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
     @DeleteMapping("/deleteOrderDetail/{cartId}/{merchantId}")
     ResponseEntity<?> deleteOrderDetail(@PathVariable Long cartId, @PathVariable Long merchantId){
