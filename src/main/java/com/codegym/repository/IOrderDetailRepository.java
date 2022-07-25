@@ -1,5 +1,6 @@
 package com.codegym.repository;
 
+import com.codegym.model.Food;
 import com.codegym.model.Order;
 import com.codegym.model.OrderDetails;
 import org.springframework.data.domain.Page;
@@ -12,4 +13,6 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetails, Long
     Iterable<OrderDetails> findAllByOrder(Order order);
 
     Iterable<OrderDetails> findAllByFoodId(Long id);
+
+    Iterable<OrderDetails> findAllByFood(Food food);
 }

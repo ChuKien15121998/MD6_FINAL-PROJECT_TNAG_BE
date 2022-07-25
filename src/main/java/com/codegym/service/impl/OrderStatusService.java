@@ -18,4 +18,20 @@ public class OrderStatusService implements IOrderStatusService {
     public Optional<OrderStatus> findByNameOrderStatus(String name) {
         return orderStatusRepository.findByNameOrderStatus(name);
     }
+
+    public Iterable<OrderStatus> findAll() {
+        return orderStatusRepository.findAll();
+    }
+
+    public Optional<OrderStatus> findById(Long id) {
+        return orderStatusRepository.findById(id);
+    }
+
+    public OrderStatus save(OrderStatus orderStatus) {
+        return orderStatusRepository.save(orderStatus);
+    }
+
+    public void remove(Long id) {
+        orderStatusRepository.deleteById(id);
+    }
 }

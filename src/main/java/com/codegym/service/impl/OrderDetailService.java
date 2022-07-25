@@ -1,5 +1,6 @@
 package com.codegym.service.impl;
 
+import com.codegym.model.Food;
 import com.codegym.model.Order;
 import com.codegym.model.OrderDetails;
 import com.codegym.repository.IOrderDetailRepository;
@@ -38,5 +39,9 @@ public class OrderDetailService implements IOrderDetailService {
     @Override
     public Iterable<OrderDetails> findAllByFoodId(Long id) {
         return orderDetailRepository.findAllByFoodId(id);
+    }
+
+    public Iterable<OrderDetails> findAllByFood(Food food) {
+        return orderDetailRepository.findAllByFood(food);
     }
 }

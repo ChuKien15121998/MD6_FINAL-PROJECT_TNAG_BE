@@ -1,21 +1,14 @@
 package com.codegym.controller;
 
 import com.codegym.model.*;
-import com.codegym.repository.IMerchantRepository;
-import com.codegym.repository.IOrderRepository;
 import com.codegym.security.userpincal.UserDetailService;
 import com.codegym.service.*;
-import com.codegym.service.impl.CartService;
-import com.codegym.service.impl.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,7 +20,7 @@ public class OrderController {
     @Autowired
     UserDetailService userDetailsService;
     @Autowired
-    IOrderSevice orderSevice;
+    IOrderService orderService;
     @Autowired
     ICustomerService customerService;
     @Autowired
@@ -43,6 +36,26 @@ public class OrderController {
     @Autowired
     ICartService cartService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> detailOrder(@PathVariable Long id) {
+        Optional<Order> order = orderService.findById(id);
+        if (!order.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @GetMapping("/{statusId}")
+    public ResponseEntity<?> getOrderByStatus (@PathVariable Long statusId) {
+        Optional<OrderStatus> orderStatusOptional = orderStatusService.findById(statusId);
+        if (!orderStatusOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        OrderStatus orderStatus = orderStatusOptional.get();
+        Iterable<Order> orders = orderService.findAllByOrderStatus(orderStatus);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
     @GetMapping("/merchant-order")
     ResponseEntity<?> findAllOrderOfMerchant() {
         AppUser appUser = userDetailsService.getCurrentUser();
@@ -51,7 +64,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Merchant merchant = merchantOptional.get();
-        Iterable<Order> ordersOfMerchant = orderSevice.findAllByMerchant(merchant);
+        Iterable<Order> ordersOfMerchant = orderService.findAllByMerchant(merchant);
         return new ResponseEntity<>(ordersOfMerchant, HttpStatus.OK);
     }
 
@@ -63,7 +76,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Customer customer = customerOptional.get();
-        Iterable<Order> ordersOfCustomer = orderSevice.findAllByCustomer(customer);
+        Iterable<Order> ordersOfCustomer = orderService.findAllByCustomer(customer);
         return new ResponseEntity<>(ordersOfCustomer, HttpStatus.OK);
     }
 
@@ -75,7 +88,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Merchant merchant = merchantOptional.get();
-        Optional<Order> orderOptional = orderSevice.findById(orderId);
+        Optional<Order> orderOptional = orderService.findById(orderId);
         if (!orderOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -91,7 +104,7 @@ public class OrderController {
             food.setSold((long) (food.getSold() + orderDetails.getQuantity()));
             foodService.save(food);
         }
-        order = orderSevice.save(order);
+        order = orderService.save(order);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
@@ -103,7 +116,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Merchant merchant = merchantOptional.get();
-        Optional<Order> orderOptional = orderSevice.findById(orderId);
+        Optional<Order> orderOptional = orderService.findById(orderId);
         if (!orderOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -112,7 +125,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         order.setOrderStatus(orderStatusService.findByNameOrderStatus("DENIED").get());
-        return new ResponseEntity<>(orderSevice.save(order), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.save(order), HttpStatus.OK);
     }
 
     @PostMapping("/createOrder/{cartId}/{merchantId}")
@@ -132,7 +145,7 @@ public class OrderController {
         order.setCreateAt(new Date());
         order.setCustomer(customer);
         order.setMerchant(merchant);
-        orderSevice.save(order);
+        orderService.save(order);
         for (CartDetail cartDetail: cartDetails) {
             totalOrderPrice += cartDetail.getTotalPrice();
             OrderDetails orderDetails = new OrderDetails();
@@ -143,7 +156,7 @@ public class OrderController {
             orderDetailService.save(orderDetails);
         }
         order.setPriceTotal(totalOrderPrice);
-        orderSevice.save(order);
+        orderService.save(order);
 //        cartDetailService.deleteAllByCartAndMerchant(cart, merchant);
         return new ResponseEntity<>(HttpStatus.OK);
     }

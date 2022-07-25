@@ -4,7 +4,7 @@ import com.codegym.model.OrderStatus;
 
 import java.util.Optional;
 
-public interface IOrderStatusService {
+public interface IOrderStatusService extends IGeneralService<OrderStatus> {
     Optional<OrderStatus> findByNameOrderStatus(String name);
 
 }
