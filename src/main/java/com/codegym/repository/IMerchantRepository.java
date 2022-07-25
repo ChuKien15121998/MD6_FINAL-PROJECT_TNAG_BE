@@ -25,4 +25,5 @@ public interface IMerchantRepository extends JpaRepository<Merchant, Long> {
     Iterable<Merchant> getListMerchantInCart(Cart cart);
 
     Iterable<Merchant> findMerchantByGoldPartnerTrue();
+
 }

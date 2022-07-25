@@ -12,4 +12,6 @@ public interface IOrderService extends IGeneralService<Order> {
 
     Iterable<Order> findAllByOrderStatus(OrderStatus orderStatus);
 
+    Iterable<Order> merchantSearch(String search);
+
 }
