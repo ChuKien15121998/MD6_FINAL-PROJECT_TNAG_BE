@@ -144,5 +144,9 @@ public class FoodController {
         return new ResponseEntity<>(foodService.save(food), HttpStatus.OK);
     }
 
-
+    @GetMapping("/best-seller")
+    public ResponseEntity<?> listSoldTop8() {
+        Iterable<Food> foods = foodService.listSoldTop8();
+        return new ResponseEntity<>(foods, HttpStatus.OK);
+    }
 }

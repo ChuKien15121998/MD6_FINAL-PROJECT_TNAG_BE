@@ -26,4 +26,7 @@ public interface IFoodService extends IGeneralService<Food> {
 
     Iterable<Food> findAllByMerchantAndIsDeleteTrue (Merchant merchant);
 
+    Iterable<Food> listSoldTop8();
+
+
 }

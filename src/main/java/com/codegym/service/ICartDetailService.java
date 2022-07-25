@@ -14,4 +14,9 @@ public interface ICartDetailService extends IGeneralService<CartDetail> {
     Iterable<CartDetail> findAllByCartAndMerchant(Cart cart, Merchant merchant);
 
 
+    Iterable<CartDetail> findCartDetailByCart (Cart cart);
+
+    Iterable<CartDetail> findCartDetailByMerchant (Merchant merchant);
+    Iterable<CartDetail> findCartDetailByCartAndMerchant (Cart cart, Merchant merchant);
+
 }

@@ -22,4 +22,7 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
     Iterable<Food> findAllByMerchant (Merchant merchant);
 
     Iterable<Food> findAllByMerchantAndIsDeleteTrue (Merchant merchant);
+
+    @Query (value = "select * from foods order by sold desc limit 8", nativeQuery = true)
+    Iterable<Food> listSoldTop8();
 }

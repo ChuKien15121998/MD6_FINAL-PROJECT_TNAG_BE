@@ -1,6 +1,7 @@
 package com.codegym.service.impl;
 
 import com.codegym.model.AppUser;
+import com.codegym.model.Cart;
 import com.codegym.model.Merchant;
 import com.codegym.repository.IMerchantRepository;
 import com.codegym.service.IMerchantService;
@@ -48,6 +49,10 @@ public class MerchantService implements IMerchantService {
 
     public Optional<Merchant> findMerchantByAppUser(AppUser appUser) {
         return merchantRepository.findMerchantByAppUser(appUser);
+    }
+
+    public Iterable<Merchant> getListMerchantInCart(Cart cart) {
+        return merchantRepository.getListMerchantInCart(cart);
     }
 
     @Override

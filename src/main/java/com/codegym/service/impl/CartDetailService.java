@@ -45,4 +45,17 @@ public class CartDetailService implements ICartDetailService {
     public void deleteCartDetailByCartAndMerchant(Cart cart, Merchant merchant) {
         cartDetailRepository.deleteCartDetailByCartAndMerchant(cart, merchant);
     }
+
+    public Iterable<CartDetail> findCartDetailByCart(Cart cart) {
+        return cartDetailRepository.findCartDetailByCart(cart);
+    }
+
+    public Iterable<CartDetail> findCartDetailByMerchant(Merchant merchant) {
+        return cartDetailRepository.findCartDetailByMerchant(merchant);
+    }
+
+    public Iterable<CartDetail> findCartDetailByCartAndMerchant(Cart cart, Merchant merchant) {
+        return cartDetailRepository.findCartDetailByCartAndMerchant(cart, merchant);
+    }
+
 }

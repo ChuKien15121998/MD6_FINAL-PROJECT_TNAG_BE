@@ -36,6 +36,14 @@ public class CartDetail {
         this.totalPrice = totalPrice;
     }
 
+    public CartDetail(Cart cart, Food food, Merchant merchant, double quantity, double totalPrice) {
+        this.cart = cart;
+        this.food = food;
+        this.merchant = merchant;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+    }
+
     public Merchant getMerchant() {
         return merchant;
     }
