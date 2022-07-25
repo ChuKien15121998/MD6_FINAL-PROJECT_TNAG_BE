@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -207,7 +210,7 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Cart cart = cartOptional.get();
-        Iterable<Integer> merchantsInCart = cartDetailService.getListMerchantInCart(cart);
+        Iterable<Merchant> merchantsInCart = merchantService.getListMerchantInCart(cart);
         return new ResponseEntity<>(merchantsInCart, HttpStatus.OK);
     }
 }

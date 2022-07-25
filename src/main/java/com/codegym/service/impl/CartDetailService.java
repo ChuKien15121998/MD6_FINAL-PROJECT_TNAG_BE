@@ -9,6 +9,7 @@ import com.codegym.service.ICartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.Optional;
 
 @Service
@@ -48,7 +49,4 @@ public class CartDetailService implements ICartDetailService {
         return cartDetailRepository.findCartDetailByCartAndMerchant(cart, merchant);
     }
 
-    public Iterable<Integer> getListMerchantInCart(Cart cart) {
-        return cartDetailRepository.getListMerchantInCart(cart);
-    }
 }

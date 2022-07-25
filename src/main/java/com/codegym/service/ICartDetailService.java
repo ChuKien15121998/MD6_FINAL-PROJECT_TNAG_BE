@@ -5,6 +5,7 @@ import com.codegym.model.CartDetail;
 import com.codegym.model.Food;
 import com.codegym.model.Merchant;
 
+import java.math.BigInteger;
 import java.util.Optional;
 
 public interface ICartDetailService extends IGeneralService<CartDetail> {
@@ -13,8 +14,5 @@ public interface ICartDetailService extends IGeneralService<CartDetail> {
 
     Iterable<CartDetail> findCartDetailByMerchant (Merchant merchant);
     Iterable<CartDetail> findCartDetailByCartAndMerchant (Cart cart, Merchant merchant);
-
-    Iterable<Integer> getListMerchantInCart(Cart cart);
-
 
 }

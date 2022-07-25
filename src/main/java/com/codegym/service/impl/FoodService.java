@@ -50,6 +50,10 @@ public class FoodService implements IFoodService {
         return foodRepository.findAllByMerchantAndIsDeleteTrue(merchant);
     }
 
+    public Iterable<Food> listSoldTop8() {
+        return foodRepository.listSoldTop8();
+    }
+
     public Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable) {
         return foodRepository.findAllByNameContaining(name, id, pageable);
     }
