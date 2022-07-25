@@ -55,6 +55,10 @@ public class MerchantService implements IMerchantService {
         return merchantRepository.getListMerchantInCart(cart);
     }
 
+    public Iterable<Merchant> findMerchantByGoldPartnerTrue() {
+        return merchantRepository.findMerchantByGoldPartnerTrue();
+    }
+
     @Override
     public Page<Merchant> findAll(Pageable pageable) {
         return merchantRepository.findAll(pageable);

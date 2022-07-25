@@ -23,5 +23,6 @@ public interface IMerchantService extends IGeneralService<Merchant> {
 
     Iterable<Merchant> getListMerchantInCart(Cart cart);
 
+    Iterable<Merchant> findMerchantByGoldPartnerTrue();
 
 }

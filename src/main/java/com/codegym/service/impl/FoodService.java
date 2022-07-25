@@ -54,6 +54,10 @@ public class FoodService implements IFoodService {
         return foodRepository.listSoldTop8();
     }
 
+    public Iterable<Food> listNewestFood() {
+        return foodRepository.listNewestFood();
+    }
+
     public Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable) {
         return foodRepository.findAllByNameContaining(name, id, pageable);
     }

@@ -62,6 +62,12 @@ public class MerchantController {
         return new ResponseEntity<>(merchant, HttpStatus.OK);
     }
 
+    @GetMapping("/goldPartner")
+    public ResponseEntity<?> listGoldPartnerMerchant() {
+        Iterable<Merchant> merchants = merchantService.findMerchantByGoldPartnerTrue();
+        return new ResponseEntity<>(merchants, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> showMerchantDetail(@PathVariable long id) {
         Optional<Merchant> merchantOptional = merchantService.findById(id);
