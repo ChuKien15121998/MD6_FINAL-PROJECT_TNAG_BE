@@ -147,4 +147,10 @@ public class FoodController {
         Iterable<Food> foods = foodService.listSoldTop8();
         return new ResponseEntity<>(foods, HttpStatus.OK);
     }
+
+    @GetMapping("/newest")
+    public ResponseEntity<?> listNewestFood() {
+        Iterable<Food> foods = foodService.listNewestFood();
+        return new ResponseEntity<>(foods, HttpStatus.OK);
+    }
 }
