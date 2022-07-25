@@ -154,6 +154,7 @@ public class OrderController {
             orderDetails.setQuantity(cartDetail.getQuantity());
             orderDetails.setPrice(cartDetail.getTotalPrice());
             orderDetailService.save(orderDetails);
+            cartDetailService.remove(cartDetail.getId()); // kien
         }
         order.setPriceTotal(totalOrderPrice);
         orderService.save(order);
