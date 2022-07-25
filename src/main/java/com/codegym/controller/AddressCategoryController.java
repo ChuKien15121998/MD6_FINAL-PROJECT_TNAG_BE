@@ -1,9 +1,6 @@
 package com.codegym.controller;
 
-import com.codegym.model.Address;
 import com.codegym.model.AddressCategory;
-import com.codegym.model.AppUser;
-import com.codegym.model.Customer;
 import com.codegym.service.impl.AddressCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")

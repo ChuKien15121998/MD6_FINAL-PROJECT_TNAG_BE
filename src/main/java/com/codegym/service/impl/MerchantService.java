@@ -35,13 +35,6 @@ public class MerchantService implements IMerchantService {
         merchantRepository.deleteById(id);
     }
 
-    public Iterable<Merchant> findMerchantByNameContaining(String name) {
-        return merchantRepository.findMerchantByNameContaining(name);
-    }
-
-    public Optional<Merchant> findMerchantByAppUser_Id(Long id) {
-        return merchantRepository.findMerchantByAppUser_Id(id);
-    }
     @Override
     public void deleteById(Long id) {
         merchantRepository.deleteById(id);

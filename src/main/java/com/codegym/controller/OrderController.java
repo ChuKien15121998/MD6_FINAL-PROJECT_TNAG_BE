@@ -99,7 +99,6 @@ public class OrderController {
         }
         order.setOrderStatus(orderStatusService.findByNameOrderStatus("ACCEPTED").get());
         Iterable<OrderDetails> orderDetailsList = orderDetailService.findAllByOrder(order);
-//        List<Food> foodList = new ArrayList<>();
         for (OrderDetails orderDetails : orderDetailsList) {
             Food food = orderDetails.getFood();
             food.setSold((long) (food.getSold() + orderDetails.getQuantity()));

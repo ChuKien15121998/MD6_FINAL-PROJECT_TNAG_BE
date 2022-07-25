@@ -5,7 +5,6 @@ import com.codegym.dto.request.ChangeProfileCustomForm;
 import com.codegym.dto.response.ResponseMessage;
 import com.codegym.model.AppUser;
 import com.codegym.model.Customer;
-import com.codegym.model.Merchant;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.jwt.JwtTokenFilter;
 import com.codegym.security.userpincal.UserDetailService;
