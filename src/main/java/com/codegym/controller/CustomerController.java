@@ -5,8 +5,10 @@ import com.codegym.dto.request.ChangeProfileCustomForm;
 import com.codegym.dto.response.ResponseMessage;
 import com.codegym.model.AppUser;
 import com.codegym.model.Customer;
+import com.codegym.model.Merchant;
 import com.codegym.security.jwt.JwtProvider;
 import com.codegym.security.jwt.JwtTokenFilter;
+import com.codegym.security.userpincal.UserDetailService;
 import com.codegym.service.IUserService;
 import com.codegym.service.impl.CustomerService;
 import com.codegym.service.impl.RoleService;
@@ -44,12 +46,21 @@ public class CustomerController {
     @Autowired
     JwtProvider jwtProvider;
 
+    @Autowired
+    UserDetailService userDetailService;
+
     @GetMapping("/{id}")
     public ResponseEntity<?> detailCustomer(@PathVariable Long id) {
         Optional<Customer> customer = customerService.findById(id);
         if (!customer.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
+    @GetMapping("/detail")
+    public ResponseEntity<?> getCurrentCustomer() {
+        AppUser appUser = userDetailService.getCurrentUser();
+        Optional<Customer> customer = customerService.findCustomerByAppUser(appUser);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
