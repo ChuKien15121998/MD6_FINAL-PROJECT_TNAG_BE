@@ -207,7 +207,7 @@ public class CartController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Cart cart = cartOptional.get();
-        Iterable<Merchant> merchantsInCart = cartDetailService.getListMerchantInCart(cart);
+        Iterable<Integer> merchantsInCart = cartDetailService.getListMerchantInCart(cart);
         return new ResponseEntity<>(merchantsInCart, HttpStatus.OK);
     }
 }

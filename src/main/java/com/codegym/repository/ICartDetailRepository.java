@@ -21,5 +21,5 @@ public interface ICartDetailRepository extends JpaRepository<CartDetail, Long> {
     Iterable<CartDetail> findCartDetailByCartAndMerchant (Cart cart, Merchant merchant);
 
     @Query(value = "SELECT DISTINCT merchant_id FROM cartdetails", nativeQuery = true)
-    Iterable<Merchant> getListMerchantInCart(Cart cart);
+    Iterable<Integer> getListMerchantInCart(Cart cart);
 }

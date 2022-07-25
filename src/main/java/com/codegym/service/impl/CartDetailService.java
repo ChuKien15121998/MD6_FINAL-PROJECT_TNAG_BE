@@ -48,7 +48,7 @@ public class CartDetailService implements ICartDetailService {
         return cartDetailRepository.findCartDetailByCartAndMerchant(cart, merchant);
     }
 
-    public Iterable<Merchant> getListMerchantInCart(Cart cart) {
+    public Iterable<Integer> getListMerchantInCart(Cart cart) {
         return cartDetailRepository.getListMerchantInCart(cart);
     }
 }
