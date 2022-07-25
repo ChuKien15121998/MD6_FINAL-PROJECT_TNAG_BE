@@ -50,6 +50,20 @@ public class FoodController {
         return new ResponseEntity<>(foodList, HttpStatus.OK);
     }
 
+    //Show list where delete false
+    @GetMapping("/show-food-by-user")
+    public ResponseEntity<Iterable<Food>> findAllByUser() {
+        Iterable<Food> foodList = foodService.findAllByUser();
+        return new ResponseEntity<>(foodList, HttpStatus.OK);
+    }
+
+    //Show list food by category
+    @GetMapping("/category/{category_id}")
+    public ResponseEntity<Iterable<Food>> findAllByCategory(@PathVariable Long category_id) {
+        Iterable<Food> foods = foodService.showListFoodByCategory(category_id);
+        return new ResponseEntity<>(foods, HttpStatus.OK);
+    }
+
     //get merchant by foodId
     @GetMapping("/{merchant_id}")
     public ResponseEntity<Iterable<Food>> findAllById(@PathVariable Long merchant_id, Pageable pageable) {
@@ -80,6 +94,11 @@ public class FoodController {
     @GetMapping("/{id}/search-by-food-name")
     public ResponseEntity<Iterable<Food>> findAllByNameContaining(@PathVariable Long id, @RequestParam String name, @PageableDefault Pageable pageable) {
         return new ResponseEntity<>(foodService.findAllByNameContaining('%'+name+'%', id,pageable),HttpStatus.OK);
+    }
+
+    @GetMapping("/search-all-food-by-name")
+    public ResponseEntity<Iterable<Food>> findAllByNameByUser(@RequestParam String name) {
+        return new ResponseEntity<>(foodService.findByNameFoodByUser('%' + name + '%'), HttpStatus.OK);
     }
 
     //Create food

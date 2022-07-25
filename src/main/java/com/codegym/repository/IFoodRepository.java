@@ -18,11 +18,21 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
     @Query(value = "SELECT * FROM foods where is_delete = true and name like ?1 and merchant_id = ?2", nativeQuery = true)
     Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable);
 
+    @Query(value = "SELECT * FROM foods where is_delete = true and name like ?", nativeQuery = true)
+    Iterable<Food> findAllByNameContainingUser(String name);
+
     @Query(value = "SELECT * FROM foods where is_delete = true", nativeQuery = true)
     Iterable<Food> findAllByMerchant (Merchant merchant);
+
+    @Query(value = "SELECT * FROM foods where is_delete = true", nativeQuery = true)
+    Iterable<Food> findAllByUser ();
 
     Iterable<Food> findAllByMerchantAndIsDeleteTrue (Merchant merchant);
 
     @Query (value = "select * from foods order by sold desc limit 8", nativeQuery = true)
     Iterable<Food> listSoldTop8();
+
+    @Query (value = "select * from foods\n" +
+            "where food_category_id = ?", nativeQuery = true)
+    Iterable<Food> showListFoodByCategory(Long id);
 }
