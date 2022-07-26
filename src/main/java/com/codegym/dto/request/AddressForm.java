@@ -2,14 +2,14 @@ package com.codegym.dto.request;
 
 import com.codegym.model.AddressCategory;
 
-public class CreateAddress {
+public class AddressForm {
     private String nameAddress;
     private AddressCategory addressCategory;
 
-    public CreateAddress() {
+    public AddressForm() {
     }
 
-    public CreateAddress(String nameAddress, AddressCategory addressCategory) {
+    public AddressForm(String nameAddress, AddressCategory addressCategory) {
         this.nameAddress = nameAddress;
         this.addressCategory = addressCategory;
     }

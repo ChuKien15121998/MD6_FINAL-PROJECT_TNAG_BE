@@ -58,6 +58,10 @@ public class FoodService implements IFoodService {
         return foodRepository.listNewestFood();
     }
 
+    public Iterable<Food> listSoldTop3ByMerchant(Long merchantId) {
+        return foodRepository.listSoldTop3ByMerchant(merchantId);
+    }
+
     public Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable) {
         return foodRepository.findAllByNameContaining(name, id, pageable);
     }

@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.model.OrderStatus;
 import com.codegym.service.IOrderStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,8 @@ public class OrderStatusController {
     IOrderStatusService orderStatusService;
 
     @GetMapping
-    public ResponseEntity<?> getListStatus(){
-        return new ResponseEntity<>(orderStatusService.findAll(), HttpStatus.OK);
+    public ResponseEntity<?> getListStatus() {
+        Iterable<OrderStatus> orderDetails = orderStatusService.findAll();
+        return new ResponseEntity<>(orderDetails, HttpStatus.OK);
     }
 }

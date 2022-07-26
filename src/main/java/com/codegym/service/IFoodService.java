@@ -30,4 +30,6 @@ public interface IFoodService extends IGeneralService<Food> {
 
     Iterable<Food> listNewestFood();
 
+    Iterable<Food> listSoldTop3ByMerchant(Long merchantId);
+
 }

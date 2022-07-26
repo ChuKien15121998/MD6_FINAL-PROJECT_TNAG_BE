@@ -28,4 +28,7 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
 
     @Query (value = "select * from foods order by id desc", nativeQuery = true)
     Iterable<Food> listNewestFood();
+
+    @Query (value = "select * from foods where merchant_id = ?1 order by sold desc limit 3", nativeQuery = true)
+    Iterable<Food> listSoldTop3ByMerchant(Long merchantId);
 }

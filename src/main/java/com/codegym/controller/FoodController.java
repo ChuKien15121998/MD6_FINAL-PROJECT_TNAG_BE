@@ -153,4 +153,10 @@ public class FoodController {
         Iterable<Food> foods = foodService.listNewestFood();
         return new ResponseEntity<>(foods, HttpStatus.OK);
     }
+
+    @GetMapping("/merchant/{merchantId}/best-seller-top3")
+    public ResponseEntity<?> listSoldTop3ByMerchant(@PathVariable Long merchantId) {
+        Iterable<Food> foods = foodService.listSoldTop3ByMerchant(merchantId);
+        return new ResponseEntity<>(foods, HttpStatus.OK);
+    }
 }
