@@ -37,10 +37,62 @@ public class OrderController {
     @Autowired
     ICartService cartService;
 
+    @GetMapping("/customer-search/{search}")
+    public ResponseEntity<?> getListOrderbyCustomerSearch(@PathVariable String search) {
+        AppUser appUser = userDetailsService.getCurrentUser();
+        Optional<Customer> customerOptional = customerService.findCustomerByAppUser(appUser);
+        if (!customerOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Customer customer = customerOptional.get();
+        Iterable<Order> orders = orderService.getListOrderbyCustomerSearch("%" + search + "%", customer.getId());
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
 
-    @GetMapping("/search/{search}")
+
+    @GetMapping("/search-all/{search}")
     public ResponseEntity<?> listOrderBySearch(@PathVariable String search) {
-        Iterable<Order> orders = orderService.merchantSearch("%" + search + "%");
+        AppUser appUser = userDetailsService.getCurrentUser();
+        Optional<Merchant> merchantOptional = merchantService.findMerchantByAppUser(appUser);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Merchant merchant = merchantOptional.get();
+        Iterable<Order> orders = orderService.merchantSearch("%" + search + "%", merchant.getId());
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/search-accepted/{search}")
+    public ResponseEntity<?> listOrderAcceptedBySearch(@PathVariable String search) {
+        AppUser appUser = userDetailsService.getCurrentUser();
+        Optional<Merchant> merchantOptional = merchantService.findMerchantByAppUser(appUser);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Merchant merchant = merchantOptional.get();
+        Iterable<Order> orders = orderService.merchantSearchAccepted("%" + search + "%", merchant.getId());
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+    @GetMapping("/search-denied/{search}")
+    public ResponseEntity<?> listOrderDeniedBySearch(@PathVariable String search) {
+        AppUser appUser = userDetailsService.getCurrentUser();
+        Optional<Merchant> merchantOptional = merchantService.findMerchantByAppUser(appUser);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Merchant merchant = merchantOptional.get();
+        Iterable<Order> orders = orderService.merchantSearchDenied("%" + search + "%", merchant.getId());
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+    @GetMapping("/search-wait/{search}")
+    public ResponseEntity<?> listOrderWaitBySearch(@PathVariable String search) {
+        AppUser appUser = userDetailsService.getCurrentUser();
+        Optional<Merchant> merchantOptional = merchantService.findMerchantByAppUser(appUser);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Merchant merchant = merchantOptional.get();
+        Iterable<Order> orders = orderService.merchantSearchWait("%" + search + "%", merchant.getId());
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
     @GetMapping("/{id}")
@@ -54,12 +106,18 @@ public class OrderController {
 
     @GetMapping("/status/{statusId}")
     public ResponseEntity<?> getOrderByStatus (@PathVariable Long statusId) {
+        AppUser appUser = userDetailsService.getCurrentUser();
+        Optional<Merchant> merchantOptional = merchantService.findMerchantByAppUser(appUser);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Merchant merchant = merchantOptional.get();
         Optional<OrderStatus> orderStatusOptional = orderStatusService.findById(statusId);
         if (!orderStatusOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         OrderStatus orderStatus = orderStatusOptional.get();
-        Iterable<Order> orders = orderService.findAllByOrderStatus(orderStatus);
+        Iterable<Order> orders = orderService.findAllByOrderStatusAndMerchant(orderStatus,merchant);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -71,7 +129,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Merchant merchant = merchantOptional.get();
-        Iterable<Order> ordersOfMerchant = orderService.findAllByMerchant(merchant.getId());
+        Iterable<Order> ordersOfMerchant = orderService.findAllByMerchant(merchant);
         return new ResponseEntity<>(ordersOfMerchant, HttpStatus.OK);
     }
 
