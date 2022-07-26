@@ -32,7 +32,6 @@ public class CartController {
     @Autowired
     private IMerchantService merchantService;
 
-
     @PostMapping("/{idFood}")
     public ResponseEntity<?> addToCart (@PathVariable Long idFood) {
         AppUser appUser = userDetailService.getCurrentUser();
