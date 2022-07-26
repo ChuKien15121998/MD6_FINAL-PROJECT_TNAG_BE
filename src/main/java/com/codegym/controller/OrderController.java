@@ -45,7 +45,7 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @GetMapping("/{statusId}")
+    @GetMapping("/findByStatus/{statusId}")
     public ResponseEntity<?> getOrderByStatus (@PathVariable Long statusId) {
         Optional<OrderStatus> orderStatusOptional = orderStatusService.findById(statusId);
         if (!orderStatusOptional.isPresent()) {
