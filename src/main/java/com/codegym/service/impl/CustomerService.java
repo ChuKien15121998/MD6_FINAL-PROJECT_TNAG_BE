@@ -14,10 +14,6 @@ public class CustomerService implements ICustomerService {
     @Autowired
     ICustomerRepository customerRepository;
 
-    public Optional<Customer> findCustomerByAppUser_Id(Long id) {
-        return customerRepository.findCustomerByAppUser_Id(id);
-    }
-
     public Optional<Customer> findCustomerByAppUser(AppUser appUser) {
         return customerRepository.findCustomerByAppUser(appUser);
     }

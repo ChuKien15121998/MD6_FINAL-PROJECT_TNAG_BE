@@ -11,10 +11,8 @@ import com.codegym.service.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -147,6 +145,18 @@ public class FoodController {
     @GetMapping("/best-seller")
     public ResponseEntity<?> listSoldTop8() {
         Iterable<Food> foods = foodService.listSoldTop8();
+        return new ResponseEntity<>(foods, HttpStatus.OK);
+    }
+
+    @GetMapping("/newest")
+    public ResponseEntity<?> listNewestFood() {
+        Iterable<Food> foods = foodService.listNewestFood();
+        return new ResponseEntity<>(foods, HttpStatus.OK);
+    }
+
+    @GetMapping("/merchant/{merchantId}/best-seller-top3")
+    public ResponseEntity<?> listSoldTop3ByMerchant(@PathVariable Long merchantId) {
+        Iterable<Food> foods = foodService.listSoldTop3ByMerchant(merchantId);
         return new ResponseEntity<>(foods, HttpStatus.OK);
     }
 }

@@ -19,7 +19,7 @@ import java.util.Optional;
 public class OrderDetailsController {
 
     @Autowired
-    IOrderService orderSevice;
+    IOrderService orderService;
 
     @Autowired
     IOrderDetailService orderDetailService;
@@ -27,9 +27,9 @@ public class OrderDetailsController {
     @Autowired
     IFoodService foodService;
 
-    @GetMapping("/{order_id}")
+    @GetMapping("/order/{order_id}")
     ResponseEntity<?> findAllByOrder(@PathVariable Long order_id) {
-        Optional<Order> orderOptional = orderSevice.findById(order_id);
+        Optional<Order> orderOptional = orderService.findById(order_id);
         if (!orderOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -38,7 +38,7 @@ public class OrderDetailsController {
         return new ResponseEntity<>(orderDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/{foodId}")
+    @GetMapping("/food/{foodId}")
     ResponseEntity<?> findAllByFood(@PathVariable Long foodId) {
         Optional<Food> foodOptional = foodService.findById(foodId);
         if (!foodOptional.isPresent()) {

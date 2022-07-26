@@ -13,9 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +31,6 @@ public class CartController {
     private ICartService cartService;
     @Autowired
     private IMerchantService merchantService;
-
 
     @PostMapping("/{idFood}")
     public ResponseEntity<?> addToCart (@PathVariable Long idFood) {

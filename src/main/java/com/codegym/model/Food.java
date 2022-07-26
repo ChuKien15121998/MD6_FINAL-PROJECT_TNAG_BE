@@ -13,17 +13,12 @@ public class Food {
     private String name;
     @Lob
     private String image;
-//    @NotBlank
     private String description;
-//    @NotBlank
     private double price;
-//    @NotBlank
     private double priceDiscount;
-//    @NotBlank
     private Boolean recommend;
     @Column (columnDefinition = "BIGINT default 0")
     private Long sold;
-//    @NotBlank
     @Column(name = "is_Delete", columnDefinition = "boolean default true")
     private Boolean isDelete;
     @ManyToOne

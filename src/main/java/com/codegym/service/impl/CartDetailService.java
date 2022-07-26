@@ -32,11 +32,6 @@ public class CartDetailService implements ICartDetailService {
         cartDetailRepository.deleteById(id);
     }
 
-    @Override
-    public Iterable<CartDetail> findAllByCartAndMerchant(Cart cart, Merchant merchant) {
-        return cartDetailRepository.findAllByCartAndMerchant(cart, merchant);
-    }
-
     public Optional<CartDetail> findCartDetailByCartAndFood(Cart cart, Food food) {
         return cartDetailRepository.findCartDetailByCartAndFood(cart, food);
     }

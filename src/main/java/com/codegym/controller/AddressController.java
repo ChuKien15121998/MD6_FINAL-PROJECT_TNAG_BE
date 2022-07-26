@@ -1,7 +1,7 @@
 package com.codegym.controller;
 
 import com.codegym.dto.request.ChangeAddressCustomer;
-import com.codegym.dto.request.CreateAddress;
+import com.codegym.dto.request.AddressForm;
 import com.codegym.dto.response.ResponseMessage;
 import com.codegym.model.Address;
 import com.codegym.model.AppUser;
@@ -47,7 +47,7 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createAddress(@RequestBody CreateAddress createAddress) {
+    public ResponseEntity<?> createAddress(@RequestBody AddressForm createAddress) {
         AppUser appUser = userDetailService.getCurrentUser();
         Optional<Customer> customer = customerService.findCustomerByAppUser(appUser);
         if (!appUser.getUsername().equals("Anonymous")) {

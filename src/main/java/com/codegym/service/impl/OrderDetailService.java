@@ -36,11 +36,6 @@ public class OrderDetailService implements IOrderDetailService {
         return orderDetailRepository.findAllByOrder(order);
     }
 
-    @Override
-    public Iterable<OrderDetails> findAllByFoodId(Long id) {
-        return orderDetailRepository.findAllByFoodId(id);
-    }
-
     public Iterable<OrderDetails> findAllByFood(Food food) {
         return orderDetailRepository.findAllByFood(food);
     }
