@@ -33,8 +33,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Iterable<Order> findAllByMerchant(Merchant merchant) {
-        return orderRepository.findAllByMerchantOrderByCreateAt(merchant);
+    public Iterable<Order> findAllByMerchant(Long id) {
+        return orderRepository.findAllByMerchant(id);
     }
 
     @Override

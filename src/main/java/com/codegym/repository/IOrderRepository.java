@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, Long> {
     Iterable<Order> findAllByMerchantOrderByCreateAt(Merchant merchant);
+//    @Query(value = "select * from orders where merchant_id = :id;", nativeQuery = true)
+    Iterable<Order> findAllByMerchant(Merchant merchant);
 
     Iterable<Order> findAllByCustomerOrderByCreateAt(Customer customer);
 

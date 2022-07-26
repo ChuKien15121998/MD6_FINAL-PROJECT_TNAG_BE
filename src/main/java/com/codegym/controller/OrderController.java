@@ -71,7 +71,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Merchant merchant = merchantOptional.get();
-        Iterable<Order> ordersOfMerchant = orderService.findAllByMerchant(merchant);
+        Iterable<Order> ordersOfMerchant = orderService.findAllByMerchant(merchant.getId());
         return new ResponseEntity<>(ordersOfMerchant, HttpStatus.OK);
     }
 
@@ -103,7 +103,7 @@ public class OrderController {
         if (order.getMerchant() != merchant) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        order.setOrderStatus(orderStatusService.findByNameOrderStatus("ACCEPTED").get());
+        order.setOrderStatus(orderStatusService.findByNameOrderStatus("Đã tiếp nhận").get());
         Iterable<OrderDetails> orderDetailsList = orderDetailService.findAllByOrder(order);
         for (OrderDetails orderDetails : orderDetailsList) {
             Food food = orderDetails.getFood();
@@ -130,7 +130,7 @@ public class OrderController {
         if (order.getMerchant() != merchant) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        order.setOrderStatus(orderStatusService.findByNameOrderStatus("DENIED").get());
+        order.setOrderStatus(orderStatusService.findByNameOrderStatus("Người bán hủy đơn hàng").get());
         return new ResponseEntity<>(orderService.save(order), HttpStatus.OK);
     }
 
@@ -146,7 +146,7 @@ public class OrderController {
         Iterable<CartDetail> cartDetails = cartDetailDto.getCartDetails();
         double totalOrderPrice = 0;
         Order order = new Order();
-        order.setOrderStatus(orderStatusService.findByNameOrderStatus("WAIT").get());
+        order.setOrderStatus(orderStatusService.findByNameOrderStatus("Đang chờ tiếp nhận").get());
         order.setCreateAt(new Date());
         order.setCustomer(customer);
         order.setMerchant(merchant);
