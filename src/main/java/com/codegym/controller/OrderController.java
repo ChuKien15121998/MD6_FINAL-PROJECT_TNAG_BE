@@ -56,6 +56,12 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
+    @GetMapping("/merchant-chart/{id}/{year}")
+    public ResponseEntity<?> findAllByPriceTotalOrderByCreateAt (@PathVariable Long id, @PathVariable int year) {
+        Iterable<Order> orders = orderService.findAllByPriceTotalOrderByCreateAt(id, year);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
     @GetMapping("/merchant-order")
     ResponseEntity<?> findAllOrderOfMerchant() {
         AppUser appUser = userDetailsService.getCurrentUser();

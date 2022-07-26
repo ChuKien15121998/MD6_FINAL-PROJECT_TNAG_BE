@@ -12,4 +12,6 @@ public interface IOrderService extends IGeneralService<Order> {
 
     Iterable<Order> findAllByOrderStatus(OrderStatus orderStatus);
 
+    Iterable<Order> findAllByPriceTotalOrderByCreateAt (Long id, int year);
+
 }
