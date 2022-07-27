@@ -7,6 +7,8 @@ import com.codegym.model.OrderStatus;
 import org.springframework.data.jpa.repository.Query;
 
 public interface IOrderService extends IGeneralService<Order> {
+    Iterable<Order> getListOrderbyCustomerSearch(String search, Long id);
+
     Iterable<Order> findAllByMerchant(Merchant merchant);
 
     Iterable<Order> findAllByCustomer(Customer customer);
