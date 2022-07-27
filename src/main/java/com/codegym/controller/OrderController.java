@@ -37,6 +37,19 @@ public class OrderController {
     @Autowired
     ICartService cartService;
 
+    @GetMapping("/customer-search/{search}")
+    public ResponseEntity<?> getListOrderbyCustomerSearch(@PathVariable String search) {
+        AppUser appUser = userDetailsService.getCurrentUser();
+        Optional<Customer> customerOptional = customerService.findCustomerByAppUser(appUser);
+        if (!customerOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Customer customer = customerOptional.get();
+        Iterable<Order> orders = orderService.getListOrderbyCustomerSearch("%" + search + "%", customer.getId());
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+
     @GetMapping("/search-all/{search}")
     public ResponseEntity<?> listOrderBySearch(@PathVariable String search) {
         AppUser appUser = userDetailsService.getCurrentUser();
@@ -148,7 +161,7 @@ public class OrderController {
         if (order.getMerchant() != merchant) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        order.setOrderStatus(orderStatusService.findByNameOrderStatus("ACCEPTED").get());
+        order.setOrderStatus(orderStatusService.findByNameOrderStatus("Đã tiếp nhận").get());
         Iterable<OrderDetails> orderDetailsList = orderDetailService.findAllByOrder(order);
         for (OrderDetails orderDetails : orderDetailsList) {
             Food food = orderDetails.getFood();
@@ -175,7 +188,7 @@ public class OrderController {
         if (order.getMerchant() != merchant) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        order.setOrderStatus(orderStatusService.findByNameOrderStatus("DENIED").get());
+        order.setOrderStatus(orderStatusService.findByNameOrderStatus("Người bán hủy đơn hàng").get());
         return new ResponseEntity<>(orderService.save(order), HttpStatus.OK);
     }
 
@@ -191,7 +204,7 @@ public class OrderController {
         Iterable<CartDetail> cartDetails = cartDetailDto.getCartDetails();
         double totalOrderPrice = 0;
         Order order = new Order();
-        order.setOrderStatus(orderStatusService.findByNameOrderStatus("WAIT").get());
+        order.setOrderStatus(orderStatusService.findByNameOrderStatus("Đang chờ tiếp nhận").get());
         order.setCreateAt(new Date());
         order.setCustomer(customer);
         order.setMerchant(merchant);
