@@ -168,39 +168,45 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         MerchantRegisterRequest mrr = findMerchantRegisterRequest.get();
-        // tao tai khoan
-        AppUser appUser = new AppUser(mrr.getUsername(), (mrr.getPassword()));
+        AppUser appUser;
         Set<Role> roles = new HashSet<>();
-        Role merchantRole = roleService.findByName(RoleName.MERCHANT).orElseThrow(() -> new RuntimeException("Role not found"));
-        Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
-        roles.add(merchantRole);
-        roles.add(userRole);
-        appUser.setRoles(roles);
-        userService.save(appUser);
-        // tao dt merchant moi va luu db
-        Merchant merchant = new Merchant();
-        merchant.setName(mrr.getName());
-        merchant.setPhoneNumber(mrr.getPhone());
-        merchant.setAvatar(mrr.getAvatar());
-        merchant.setImageBanner(mrr.getImageBanner());
-        merchant.setOpenTime(mrr.getOpenTime());
-        merchant.setCloseTime(mrr.getCloseTime());
-        merchant.setAddress(mrr.getAddress());
-        merchant.setAppUser(appUser);
-        merchant.setAccept(true);
-        merchant.setGoldPartner(false);
-        merchant.setActive(true);
-        Customer customer = new Customer(mrr.getName(), mrr.getAvatar(), mrr.getPhone(), appUser);
-        // thay doi merchanRegisterRequest ==> reviewed=true, accepted = true
-        mrr.setReviewed(true);
-        mrr.setAccept(true);
-        //luu thay doi vao DB
-        merchantService.save(merchant);
-        customerService.save(customer);
-        merchantRegisterRequestService.save(mrr);
-        String siteURL = getSiteURL(request);
-        sendEmailAccept(appUser, merchant, siteURL);
-        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+        if (userService.existsByUsername(mrr.getUsername())) {
+             appUser = userService.findByUsername(mrr.getUsername()).get();
+             Role merchantRole = roleService.findByName(RoleName.MERCHANT).orElseThrow(() -> new RuntimeException("Role not found"));
+             Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
+             roles.add(merchantRole);
+             roles.add(userRole);
+             appUser.setRoles(roles);
+        } else {
+            appUser = new AppUser(mrr.getUsername(), (mrr.getPassword()));
+            Role merchantRole = roleService.findByName(RoleName.MERCHANT).orElseThrow(() -> new RuntimeException("Role not found"));
+            Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
+            roles.add(merchantRole);
+            roles.add(userRole);
+            appUser.setRoles(roles);
+        }
+            userService.save(appUser);
+            // tao dt merchant moi va luu db
+            Merchant merchant = new Merchant();
+            merchant.setName(mrr.getName());
+            merchant.setPhoneNumber(mrr.getPhone());
+            merchant.setAvatar(mrr.getAvatar());
+            merchant.setImageBanner(mrr.getImageBanner());
+            merchant.setOpenTime(mrr.getOpenTime());
+            merchant.setCloseTime(mrr.getCloseTime());
+            merchant.setAddress(mrr.getAddress());
+            merchant.setAppUser(appUser);
+            merchant.setAccept(true);
+            merchant.setGoldPartner(false);
+            merchant.setActive(true);
+            mrr.setReviewed(true);
+            mrr.setAccept(true);
+            //luu thay doi vao DB
+            merchantService.save(merchant);
+            merchantRegisterRequestService.save(mrr);
+            String siteURL = getSiteURL(request);
+            sendEmailAccept(appUser, merchant, siteURL);
+            return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
     public void sendEmailAccept(AppUser appUser,Merchant merchant, String siteURL) throws UnsupportedEncodingException, MessagingException {
