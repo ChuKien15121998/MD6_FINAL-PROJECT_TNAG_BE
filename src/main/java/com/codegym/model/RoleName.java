@@ -2,6 +2,6 @@ package com.codegym.model;
 
 public enum RoleName {
     USER,
-    PM,
+    MERCHANT,
     ADMIN
 }
