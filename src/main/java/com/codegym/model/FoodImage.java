@@ -10,20 +10,20 @@ public class FoodImage {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     @Lob
-    private Long image;
+    private String image;
     @ManyToOne
     private Food food;
 
     public FoodImage() {
     }
 
-    public FoodImage(Long id, Long image, Food food) {
+    public FoodImage(Long id, String image, Food food) {
         this.id = id;
         this.image = image;
         this.food = food;
     }
 
-    public FoodImage(Long image, Food food) {
+    public FoodImage(String image, Food food) {
         this.image = image;
         this.food = food;
     }
@@ -36,11 +36,11 @@ public class FoodImage {
         this.id = id;
     }
 
-    public Long getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Long image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

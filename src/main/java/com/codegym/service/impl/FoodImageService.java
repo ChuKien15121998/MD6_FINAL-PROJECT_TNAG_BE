@@ -29,6 +29,6 @@ public class FoodImageService implements IFoodImageService {
     }
 
     public Iterable<FoodImage> findFoodImageByFood(Food food) {
-        return foodImageRepository.findFoodImageByFood(food);
+        return foodImageRepository.findAllByFood(food.getId());
     }
 }
