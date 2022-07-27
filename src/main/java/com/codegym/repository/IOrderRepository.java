@@ -19,7 +19,7 @@ public interface IOrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from orders where id like :search or (customer_id in ((select id from customer where name like :search) union (select id from customer where phone_number like :search))) and merchant_id = :id", nativeQuery = true)
     Iterable<Order> merchantSearch(String search, Long id);
 
-    @Query(value = "select * from orders where id like :search or (merchant_id in ((select id from merchant where name like :search) union (select id from merchant where address like :search))) and customer_id = :id", nativeQuery = true)
+    @Query(value = "select * from orders where id like :search or(id in (select order_id from orderdetails where food_id in (select id from foods where name like :search))) or (merchant_id in ((select id from merchant where name like :search) union (select id from merchant where address like :search))) and customer_id = :id", nativeQuery = true)
     Iterable<Order> getListOrderbyCustomerSearch(String search, Long id);
 
 //    @Query(value = "select * from orders where id like :search or (merchant_id in ((select id from merchant where name like :search) union (select id from merchant where address like :search))) and customer_id = :id;", nativeQuery = true)
