@@ -121,7 +121,7 @@ public class AuthController {
         Optional<AppUser> appUser = userService.findByUsername(signInForm.getUsername());
         Optional<Merchant> merchant = merchantService.findMerchantByAppUser(appUser.get());
         if (!merchant.isPresent() || !merchant.get().isActive()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage("no_signin"), HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
