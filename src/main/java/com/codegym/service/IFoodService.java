@@ -28,7 +28,13 @@ public interface IFoodService extends IGeneralService<Food> {
 
     Iterable<Food> listSoldTop8();
 
+
+    Iterable<Food> showListFoodByCategory(Long id);
+
+    Iterable<Food> findByNameFoodByUser(String name);
+
     Iterable<Food> listNewestFood();
+
 
     Iterable<Food> listSoldTop3ByMerchant(Long merchantId);
 

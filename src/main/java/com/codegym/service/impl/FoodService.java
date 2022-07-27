@@ -21,6 +21,12 @@ public class FoodService implements IFoodService {
         return foodRepository.findAll();
     }
 
+    public Iterable<Food> findAllByUser() {
+        return foodRepository.findAllByUser();
+    }
+
+
+
     public Optional<Food> findById(Long id) {
         return foodRepository.findById(id);
     }
@@ -54,6 +60,14 @@ public class FoodService implements IFoodService {
         return foodRepository.listSoldTop8();
     }
 
+
+    public Iterable<Food> showListFoodByCategory(Long id) {
+        return foodRepository.showListFoodByCategory(id);
+    }
+
+    public Iterable<Food> findByNameFoodByUser(String name) {
+        return foodRepository.findAllByNameContainingUser(name);
+    }
     public Iterable<Food> listNewestFood() {
         return foodRepository.listNewestFood();
     }
@@ -65,4 +79,5 @@ public class FoodService implements IFoodService {
     public Page<Food> findAllByNameContaining(String name, Long id, Pageable pageable) {
         return foodRepository.findAllByNameContaining(name, id, pageable);
     }
+
 }
