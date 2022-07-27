@@ -32,12 +32,12 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
     @Query (value = "select * from foods order by sold desc limit 8", nativeQuery = true)
     Iterable<Food> listSoldTop8();
 
-<<<<<<< HEAD
+
     @Query (value = "select * from foods\n" +
             "where food_category_id = ?", nativeQuery = true)
     Iterable<Food> showListFoodByCategory(Long id);
-=======
+
     @Query (value = "select * from foods order by id desc", nativeQuery = true)
     Iterable<Food> listNewestFood();
->>>>>>> 8f6ef77f7e6c3b1d68eff802cbaef9e3ad1f192c
+
 }
