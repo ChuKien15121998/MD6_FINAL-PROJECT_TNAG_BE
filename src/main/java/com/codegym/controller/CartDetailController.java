@@ -28,7 +28,11 @@ public class CartDetailController {
     private ICustomerService customerService;
     @Autowired
     private ICartService cartService;
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCartDetailById (@PathVariable Long id) {
+        cartDetailService.remove(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> listCartDetailById (@PathVariable Long id) {
         Optional<CartDetail> cartDetailOptional = cartDetailService.findById(id);
