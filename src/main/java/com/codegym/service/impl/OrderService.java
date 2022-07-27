@@ -42,11 +42,26 @@ public class OrderService implements IOrderService {
         return orderRepository.findAllByCustomerOrderByCreateAt(customer);
     }
 
-    public Iterable<Order> findAllByOrderStatus(OrderStatus orderStatus) {
-        return orderRepository.findAllByOrderStatus(orderStatus);
+    public Iterable<Order> findAllByOrderStatusAndMerchant(OrderStatus orderStatus, Merchant merchant) {
+        return orderRepository.findAllByOrderStatusAndMerchant(orderStatus, merchant);
     }
 
-    public Iterable<Order> merchantSearch(String search) {
-        return orderRepository.merchantSearch(search);
+    public Iterable<Order> merchantSearch(String search, Long id) {
+        return orderRepository.merchantSearch(search,id);
+    }
+
+    @Override
+    public Iterable<Order> merchantSearchAccepted(String search, Long id) {
+        return orderRepository.merchantSearchAccepted(search,id);
+    }
+
+    @Override
+    public Iterable<Order> merchantSearchDenied(String search, Long id) {
+        return orderRepository.merchantSearchDenied(search,id);
+    }
+
+    @Override
+    public Iterable<Order> merchantSearchWait(String search, Long id) {
+        return orderRepository.merchantSearchWait(search,id);
     }
 }
