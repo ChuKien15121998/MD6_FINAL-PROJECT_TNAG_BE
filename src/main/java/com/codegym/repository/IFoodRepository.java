@@ -29,15 +29,16 @@ public interface IFoodRepository extends JpaRepository<Food, Long> {
 
     Iterable<Food> findAllByMerchantAndIsDeleteTrue (Merchant merchant);
 
-    @Query (value = "select * from foods order by sold desc limit 8", nativeQuery = true)
+    @Query (value = "select * from foods where is_delete = true order by sold desc limit 8", nativeQuery = true)
     Iterable<Food> listSoldTop8();
 
 
     @Query (value = "select * from foods\n" +
             "where food_category_id = ?", nativeQuery = true)
+
     Iterable<Food> showListFoodByCategory(Long id);
 
-    @Query (value = "select * from foods order by id desc", nativeQuery = true)
+    @Query (value = "select * from foods where is_delete = true order by id desc", nativeQuery = true)
     Iterable<Food> listNewestFood();
 
     @Query (value = "select * from foods where merchant_id = ?1 and is_delete = true order by sold desc limit 3", nativeQuery = true)
