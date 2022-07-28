@@ -16,7 +16,7 @@ public interface IOrderRepository extends JpaRepository<Order, Long> {
 
     Iterable<Order> findAllByOrderStatus(OrderStatus orderStatus);
 
-    @Query(value = "select month(create_at), sum(price_total) from orders where merchant_id = :id and year(create_at) = :year group by month(create_at) order by month(create_at) asc", nativeQuery = true)
+    @Query(value = "select * from orders where merchant_id = ?1 and year(create_at) = ?2 group by month(create_at) order by asc ", nativeQuery = true)
     Iterable<Order> findAllByPriceTotalOrderByCreateAt(Long id, int year);
 
 }
