@@ -21,8 +21,8 @@ public interface IMerchantRepository extends JpaRepository<Merchant, Long> {
 
     Iterable<Merchant> findMerchantByNameContaining(String name);
 
-    @Query(value = "select * from merchant where id in (select merchant_id from cartdetails group by merchant_id)", nativeQuery = true)
-    Iterable<Merchant> getListMerchantInCart(Cart cart);
+    @Query(value = "select * from merchant where id in (select merchant_id from cartdetails where cart_id := cart_id  group by merchant_id )", nativeQuery = true)
+    Iterable<Merchant> getListMerchantInCart(Long cart_id);
 
     Iterable<Merchant> findMerchantByGoldPartnerTrue();
 

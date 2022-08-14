@@ -6,6 +6,8 @@ import com.codegym.model.Order;
 import com.codegym.model.OrderStatus;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
+
 public interface IOrderService extends IGeneralService<Order> {
     Iterable<Order> getListOrderbyCustomerSearch(String search, Long id);
 
@@ -22,4 +24,5 @@ public interface IOrderService extends IGeneralService<Order> {
     Iterable<Order> merchantSearchDenied(String search, Long id);
 
     Iterable<Order> merchantSearchWait(String search, Long id);
+    Iterable<Double> getReveneuOfMerchant(Long merchant_id, String from, String to);
 }

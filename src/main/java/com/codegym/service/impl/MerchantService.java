@@ -45,7 +45,7 @@ public class MerchantService implements IMerchantService {
     }
 
     public Iterable<Merchant> getListMerchantInCart(Cart cart) {
-        return merchantRepository.getListMerchantInCart(cart);
+        return merchantRepository.getListMerchantInCart(cart.getId());
     }
 
     public Iterable<Merchant> findMerchantByGoldPartnerTrue() {

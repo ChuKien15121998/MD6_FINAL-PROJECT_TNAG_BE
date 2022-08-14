@@ -9,6 +9,7 @@ import com.codegym.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -68,5 +69,10 @@ public class OrderService implements IOrderService {
     @Override
     public Iterable<Order> merchantSearchWait(String search, Long id) {
         return orderRepository.merchantSearchWait(search,id);
+    }
+
+    @Override
+    public Iterable<Double> getReveneuOfMerchant(Long merchant_id, String from, String to) {
+        return orderRepository.getReveneuOfMerchant(merchant_id, from, to);
     }
 }

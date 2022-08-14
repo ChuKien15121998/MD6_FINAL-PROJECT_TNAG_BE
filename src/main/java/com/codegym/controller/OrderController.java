@@ -5,12 +5,20 @@ import com.codegym.model.*;
 import com.codegym.security.userpincal.UserDetailService;
 import com.codegym.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+import org.springframework.format.datetime.joda.LocalDateTimeParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
+
+import static java.time.LocalTime.now;
 
 @RestController
 @CrossOrigin("*")
@@ -36,6 +44,17 @@ public class OrderController {
     ICartDetailService cartDetailService;
     @Autowired
     ICartService cartService;
+
+    @GetMapping("/merchant/reveneu")
+    public ResponseEntity<?> getReveneuOfMerchant(){
+        AppUser appUser = userDetailsService.getCurrentUser();
+        Optional<Merchant> merchantOptional = merchantService.findMerchantByAppUser(appUser);
+        if (!merchantOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<Double> reveneu = orderService.getReveneuOfMerchant(merchantOptional.get().getId(),LocalDateTime.now().minusDays(7).toString(),LocalDateTime.now().toString());
+        return new ResponseEntity<>(reveneu, HttpStatus.OK);
+    }
 
     @GetMapping("/customer-search/{search}")
     public ResponseEntity<?> getListOrderbyCustomerSearch(@PathVariable String search) {
